@@ -1,0 +1,121 @@
+﻿創建git倉庫
+當前目錄下多了一個.git的目錄，這個目錄是Git來跟踪管理版本庫的
+git init
+工作區狀態
+git status //查看狀態
+git diff //比較差異
+版本回退
+HEAD指向的版本就是當前版本，因此，Git允許我們在版本的歷史之間穿梭
+git log //查看提交的記錄
+git reflog //查看命令操作的記錄
+git reset --hard HEAD//回退到Head的工作區
+工作區、暫存區
+工作區就是當前操作的目錄。當你使用git add的時候就是把文件加到暫存區。 commit之後就是把暫存區的文件提交到分支中
+版本庫記錄著差異。
+image
+
+撤銷修改
+命令git checkout -- readme.txt意思就是，把readme.txt文件在工作區的修改全部撤銷，這裡有兩種情況：
+一種是readme.txt自修改後還沒有被放到暫存區，現在，撤銷修改就回到和版本庫一模一樣的狀態；
+一種是readme.txt已經添加到暫存區後，又作了修改，現在，撤銷修改就回到添加到暫存區後的狀態。
+用命令
+
+git reset HEAD file
+可以把暫存區的修改撤銷掉（unstage），重新放回工作區。使用 HEAD表示最新的狀態
+刪除文件
+使用git rm file 可以刪除版本庫中的文件
+git rm read.txt
+
+git checkout -- read.txt //從版本庫中恢復
+遠程倉庫
+添加遠程倉庫
+origin 是倉庫名字。是git的默認的
+git remote add origin 倉庫地址
+git remote -v 查看遠程倉庫
+git push -u origin master //將本地master和orgin分支關聯。
+git clone 倉庫地址 //clone 一個遠程倉庫到本地
+git checkout -b branch-name origin/branch-name，//本地和遠程分支的名稱最好一致
+git branch --set-upstream branch-name origin/branch-name //建立本地分支和遠程分支的關聯，
+git pull orgin master //從遠程分支抓取
+git分支
+master 是git 默認的分支，也叫主分支。每一次提交在分支上形成了一個時間線。 HEAD指向該分支
+image
+
+創建分支
+git branch dev //創建分支
+git checkout dev //切換分支
+git branch //命令會列出所有分支
+git checkout -b dev //創建並切換到dev分支
+HEAD指針指向了dev image
+合併分支
+合併某分支到當前分支：git merge
+git checkout master
+git merge dev
+刪除分支
+git branch -d dev
+git branch -D <name> //強行刪除
+工作區暫存
+將工作區暫時保存起來 不提交到暫存區。
+git stash //保存工作區
+
+git stash list //查看保存的工作區
+git stash pop
+git stash apply //恢復保存的工作區
+git stach drop //刪除保存的工作區
+tag標籤
+git tag v1.0 //打標籤
+git tag // 列出所有的標籤
+git tag commit_id //給特定的commit_id打標籤
+git tag -a v1.0 -m "tag1" //打帶說明的標籤
+操作標籤
+
+刪除標籤
+git tag -d v1.0
+推送標籤到遠程分支
+git push orgin v1.0
+git push origin --tags// 推送所有的標籤到遠程分支
+git push origin :refs/tags/v0.9 //刪除遠程分支的標籤
+配置git
+初次使用 需要配置自己的信息，
+git config --global user.name "John Doe"
+git config --global user.email johndoe@example.com
+配置忽略文件
+.gitignore文件本身要放到版本庫裡，並且可以對.gitignore做版本管理！
+忽略文件的原則是：
+忽略操作系統自動生成的文件，比如縮略圖等；
+、可執行文件等，也就是如果一個文件是通過另一個文件自動生成的，那自動生成的文件就沒必要放進版本庫，比如Java編譯產生的.class文件
+忽略你自己的帶有敏感信息的配置文件，比如存放口令的配置文件。
+設置別名
+別名就是把一些複雜的命令簡化 類似svn co等之類的
+git config --global alias.co checkout
+git config --global alias.ci commit
+git config --global alias.br branch
+git config --global alias.unstage 'reset HEAD'
+git config --global alias.last 'log -1'
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C( bold blue)<%an>%Creset' --abbrev-commit"
+當前項目配置
+每個倉庫的Git配置文件都放在.git/config文件中：
+[core]
+    repositoryformatversion = 0
+    filemode = true
+    bare = false
+    logallrefupdates = true
+    ignorecase = true
+    precomposeunicode = true
+[remote "origin"]
+    url = git@github.com:xianyunyh/PHP-Interview
+    fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+    remote = origin
+    merge = refs/heads/master
+[alias]
+    last = log -1
+當前用戶的Git配置文件放在用戶主目錄下的一個隱藏文件.gitconfig中
+[alias]
+    co = checkout
+    ci = commit
+    br = branch
+    st = status
+[user]
+    name = Your Name
+    email = your@email.com

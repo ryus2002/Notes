@@ -1,0 +1,10 @@
+crontab
+* * * * * echo "hello" #每1分鐘執行hello
+3,15 * * * * myCommand #每小時第三分鐘和第五分鐘執行
+3,15 8-11 * * * myCommand# 在上午8點到11點的第3和第15分鐘執行
+3,15 8-11 */2 * * myCommand #每隔兩天的上午8點到11點的第3和第15分鐘執行
+30 21 * * * /etc/init.d/smb restart #每晚的21:30重啟smb
+0 23 * * 6 /etc/init.d/smb restart #每星期六的晚上11 : 00 pm重啟smb
+
+#查詢執行中的php程式
+ps -aux|grep .php 
