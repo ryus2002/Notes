@@ -1,0 +1,6 @@
+#1
+PHP使用strtotime("-1 month", time())得到上个月是错的
+今天是3月30号，使用strtotime("-1 month", time())得到的不是2月份，而是3月份
+$t = date('Y-m');
+然后再使用strtotime("-1 month", $t)即可
+https://blog.csdn.net/zhanghao143lina/article/details/79971650
