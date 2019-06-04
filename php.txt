@@ -4,3 +4,260 @@ PHP使用strtotime("-1 month", time())得到上个月是错的
 $t = date('Y-m');
 然后再使用strtotime("-1 month", $t)即可
 https://blog.csdn.net/zhanghao143lina/article/details/79971650
+
+SOLID 是…
+1. SRP - 單一職責原則 Single Responsibility Principle
+讓類別只有一個改變的原因，只有一種職責，一個類別只負責一件事。
+Ex: 抓取資料 + 輸出 HTML -> 兩件事，應該給兩個類別去處理
+
+秘訣
+關注點分離，模組切割 - ex: 購物車模組(加入購物車、結帳)、訂單模組(建訂單、取訂單)
+依 Domain 來拆開類別的職責
+注意切太細的話會有類別太多的問題，要注意 autoload 的效能問題
+實例
+第一次寫購物車就把所有功能塞在一個 Class 裡。
+
+class Cart {
+    // Add item
+    // Remove item
+    // Get all items
+    // 設定訂單資訊       -> 訂單的事
+    // 取得 ATM 付款資訊  -> 訂單的事
+    // 設定物流          -> 訂單的事
+    // 儲存訂單          -> 訂單的事
+    // 寄送訂單確認信     -> 訂單or寄信的事
+}
+用 SRP 原則來重構 Cart 類別 -> Extract Order Class
+
+從 Cart 中把 methods 抽取放進另一個類別 "Order"
+class Order {
+    // 設定訂單資訊       -> 訂單的事
+    // 取得 ATM 付款資訊  -> 訂單的事
+    // 設定物流          -> 訂單的事
+    // 儲存訂單          -> 訂單的事
+    // 寄送訂單確認信     -> 訂單or寄信的事
+}
+重構後的 Cart class
+
+class Cart {
+    // Add item
+    // Remove item
+    // Get all items
+}
+在設計階段就可以避開類別職責太大的問題 ex: 串金流、訂單、運送、購物車、折扣優惠
+
+小心維護階段又讓類別的職責變多
+2. OCP - 開放/關閉原則 Open-Closed Principle
+軟體中的對象(類別、函數等等)，對於擴展是開放的，對於修改是封閉的。
+白話：就像讓程式可以插入外掛而不用動到程式本身。 ex: 日本卡通中各種組合的機器人。
+
+秘訣
+只考慮抽象層級的介面互動 ex: 新竹物流
+把變化委託給其他類別處理 ex: 加入其他物流
+範例
+購物車加入商品時有不同促銷活動的處理方式，而活動類型很難確定。
+
+class Cart {
+    public function addItem($sn, $qty) {
+        // 加入 Cart 之前的優惠判斷
+        if ('99999' == $sn) {
+            // 處理特別商品
+        } elseif ('99' == $sn) {
+            // 處理活動商品
+        } else {
+            // 處理一般商品
+        }
+
+        // 真的加入購物車
+
+        // 加入 Cart 後的優惠判斷
+        if ('99999' == $sn) {
+            // 處理特別商品
+        } elseif ('99' == $sn) {
+            // 處理活動商品
+        } else {
+            // 處理一般商品
+        }
+    }
+}
+重構之後
+class Cart {
+    public function addItem($sn, $qty) {
+        // 加入 Cart 之前的優惠判斷，讓 plugin 來處理
+        $this->plugin->beforeAdditem($item);
+
+        // 真的加入購物車
+        $this->items[$sn] = $item;
+
+        // 加入 Cart 後的優惠判斷，讓 plugin 來處理
+        $this->plugin->afterAdditem($item);
+    }
+}
+小提醒
+不是所有程式都需要 OCP
+可能一開始沒考慮到擴充，但可以之後再透過重構完成。
+不要過度繼承，讓子類別得到太多不需要的功能
+3. LSP - 里氏替換原則 Liskov Substitution Principle
+所有參照基礎類別的地方，必須可以透明地使用衍生類別的物件代而不需要任何改變。
+白話：所有使用父類別的地方也要對子類別一視同仁
+
+Ex: 王子騎「馬」
+王子騎「白馬」 -> 符合 LSP，可取代父類別，白馬當成參數來用？
+王子騎「黑馬」 -> 符合 LSP
+王子騎「斑馬」 -> 斑馬也是馬，但不能被騎
+
+秘訣
+Design by Contract
+方法簽名(method signature)、回傳值、丟出的異常(Exception) 要一致。
+PHP 回傳值不能限定型態(data type)，要 php 7 以後才行
+PHP 5.X 靠 docblock 的 annotation 來約束
+範例
+class CartController {
+    // 新增 item
+        // 如果該 item 不能被加入購物車，則丟出 Error 500
+        // 不然就導向購物車首頁
+}
+
+class Cart {
+    // 新增 item
+        // 加成功就 return true，失敗就 return false
+}
+範例(反例)
+class CartController {
+    // 新增 item
+    public function addItem($sn, $qty) {
+        // 如果該 item 不能被加入購物車，則丟出 Error 500
+        // 不然就導向購物車首頁
+    }
+}
+
+class EventCart extends Cart { // 繼承之前的 Cart，但是是特別針對這次活動商品設計不同邏輯
+    // 新增 item
+    public function addItem($sn, $qty) {
+        // 加成功就 return true
+        // 失敗就 die('非活動商品')
+    }
+}
+在回傳值型別上違反 LSP，EventCart 繼承了 Cart，所以 “新增Item” 行為應該要跟之前 Cart 一樣，回傳 true/false 啊！不然程式怎麼掛的都不知道，這種情況特別是不同的人維護同一份 Code 要新增功能的時候。
+
+小提醒
+白馬王子騎白馬，父類不能取代子類。
+拋棄繼承，改用組合方式
+
+3-2. LKP - 最小知識原則 Least Knowledge Principle (a.k.a 迪米特法則 Law of Demeter)
+盡可能減少類別中的 public method，降低其他類別對此類別的耦合。
+把一件完整的事情封裝起來！
+ex: 不要讓 Controller 知道太多操作的細節
+
+範例
+重構前
+
+class CartController {
+    public function checkout($sn, $payment, $shipment) {
+        $order = new Order($sn);
+
+        $order->setPayment($payment);
+        $order->setShipment($shipment);
+
+        if ( $order->save() ) {
+            $order->sendMail();
+        }
+    }
+}
+重構後
+
+class Order {
+    public function checkout($payment, $shipment) {
+        $this->setPayment($payment);
+        $this->setShipment($shipment);
+
+        if ( $this->save() ) {
+            $this->sendMail();
+        }
+    }
+}
+
+class CartController {
+    public function checkout($payment, $shipment) {
+        $order = new Order($sn);
+        $order->checkout($payment, $shipment);
+    }
+}
+4. ISP - 介面隔離原則 Interface Segregation Principle
+Ex: 購物車寄信
+
+重構前
+
+class Mailer {
+    public function send(IOrder $order) {
+        $mail = $order->getReceiverMail();
+    }
+}
+
+class Order implements IOrder { ... }
+
+class Message implements IOrder {
+    public function getMail() {
+        return $this->user->mail;
+    }
+
+    public function getOrderNumber() {
+        // 這個是 IOrder 裡定義要實作的，但 Message 中用不到，只好放一個空的 method
+        // 違反 ISP 原則，不應該在 class 實作用不到的介面方法
+        // 而應該要把介面方法再做細分，拆成兩個介面
+    }
+}
+重構後
+
+class Mailer {
+    public function send(Mailable $target) { // 只實作 Mailable 介面就好
+        $mail = $target->getMail(); // 取代之前 getReceiverMail(); 的功能
+    }
+}
+
+interface Mailable {
+    public function getMail();
+}
+
+class Order implements Mailable, IOrder { ... }
+
+class Message implements Mailable {
+    public function getMail() {
+        return $this->user->mail;
+    }
+}
+5. DIP - 依頼反轉原則 Dependency Inversion Principle
+Ex: 用 iPhone 跟家人通話 (依頼 iPhone 實作)
+Ex: 用 手機 跟家人通話 (不依頼 iPhone 實作，只要實作「手機」介面就行了)
+
+秘訣
+互動的部份交給抽象類別或介面
+會改變的實作放到子類別
+
+範例
+Ex: 原本只有 ATM 一種付款方式，但寫死了。萬一要換能信用卡付款怎麼辦？
+
+重構前
+
+class Order {
+    public function checkout() {
+        $atm = new ATM();
+        $atm->pay();
+    }
+}
+
+會賺錢的程式，沒有新需求要改 ===> 不用理他(不用重構)！
+重構後，抽取 PaymentInterface，不要依頼 ATM 類的實作
+
+interface PaymentInterface {
+    public function pay();
+}
+
+class Order {
+    public function checkout(PaymentInterface $payment) {
+        $payment->pay();
+    }
+}
+SOLID 講的是同一件事
+
+面對原始碼改變的策略
