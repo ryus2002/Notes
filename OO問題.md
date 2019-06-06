@@ -86,6 +86,25 @@ class User {
   }
 }
 ```
+小弟答案︰看不太懂 我覺得把User去掉也能動...?
+```
+class User {
+  private string _firstName
+  private string _lastName
+  private int _age
+
+  public getUser() {
+    return array(_firstName, _lastName, _age)
+  }
+
+  public setUser(string firstName, string lastName, int age) {
+    _firstName = firstName
+    _lastName = lastName
+    _age = age
+  }
+}
+```
+
 
 範例程式為虛擬碼，請試著重構以下程式, 提示:Guard Clauses
 ```
