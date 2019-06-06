@@ -40,7 +40,7 @@ class PaymentCompany {
 
 String t = "Ant"
 
-payment = new PaymentCompany(COMPANY) 
+payment = new PaymentCompany(Request COMPANY) 
 print payment.pay(t,100)
 ```
 
