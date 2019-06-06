@@ -65,3 +65,19 @@ function checkInitialize(object obj) {
   return msg
 }
 ```
+小弟答案︰
+```
+function checkInitialize(object obj) {
+  string msg
+  if obj is not null then {
+    throw new Exception("object is not null");
+  }
+
+  if obj is not initialized then {
+    throw new Exception("object is not initialized");
+  }
+
+  msg = "object is valid"
+  return msg
+}
+```
