@@ -25,20 +25,7 @@ print payment.pay(t,100)
 
 嘗試用Miles大大說法寫程式
 ```
-class PaymentCompanyA {
-
-  private string _COMPANY
-  
-  PaymentCompanyA(string COMPANY) {  //這行是建構子, 類似__construct
-    _COMPANY = COMPANY
-  }
-
-  public function pay(string t, int a) {
-    return _COMPANY + ":$" + a + "to" + t
-  }
-}
-
-class PaymentCompanyB {
+class PaymentCompany {
 
   private string _COMPANY
   
@@ -52,13 +39,8 @@ class PaymentCompanyB {
 }
 
 String t = "Ant"
-if Request COMPANY is "CompanyA" then {
-  payment = new PaymentCompanyA(COMPANY) 
-}
-else {
-  payment = new PaymentCompanyB(COMPANY)
-}
 
+payment = new PaymentCompany(COMPANY) 
 print payment.pay(t,100)
 ```
 
