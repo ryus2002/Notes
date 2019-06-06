@@ -40,14 +40,14 @@ class PaymentCompany implements tool_action
 class PaymentCompanyA {
   public function pay(string CompanyName,string t, int a) {
     PaymentCompany = new PaymentCompany()
-    PaymentCompany.pay(CompanyName,t,a)
+    return PaymentCompany.pay(CompanyName,t,a)
   }
 }
 
 class PaymentCompanyB {
   public function pay(string CompanyName,string t, int a) {
     PaymentCompany = new PaymentCompany()
-    PaymentCompany.pay(CompanyName,t,a)
+    return PaymentCompany.pay(CompanyName,t,a)
   }
 }
 
