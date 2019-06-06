@@ -86,12 +86,16 @@ class User {
   }
 }
 ```
-小弟答案︰看不太懂 我覺得把User去掉也能動...?
+參考答案︰User(string firstName,string lastName, int age) 應該是建構子, 類似__construct
 ```
 class User {
   private string _firstName
   private string _lastName
   private int _age
+
+  User(string firstName,string lastName, int age) {
+    setUser(firstName, lastName, age)
+  }
 
   public getUser() {
     return array(_firstName, _lastName, _age)
@@ -122,7 +126,7 @@ function checkInitialize(object obj) {
   return msg
 }
 ```
-小弟答案︰
+參考答案︰
 ```
 function checkInitialize(object obj) {
   string msg
