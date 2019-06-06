@@ -29,7 +29,7 @@ class PaymentCompanyA {
 
   private string _COMPANY
   
-  PaymentCompanyA(string COMPANY) {
+  PaymentCompanyA(string COMPANY) {  //這行是建構子, 類似__construct
     _COMPANY = COMPANY
   }
 
@@ -42,7 +42,7 @@ class PaymentCompanyB {
 
   private string _COMPANY
   
-  PaymentCompanyB(string COMPANY) {
+  PaymentCompanyB(string COMPANY) {  //這行是建構子, 類似__construct
     _COMPANY = COMPANY
   }
   
@@ -126,14 +126,14 @@ class User {
   }
 }
 ```
-參考答案︰User(string firstName,string lastName, int age) 應該是建構子, 類似__construct
+參考答案︰
 ```
 class User {
   private string _firstName
   private string _lastName
   private int _age
 
-  User(string firstName,string lastName, int age) {
+  User(string firstName,string lastName, int age) { //這行應該是建構子, 類似__construct
     setUser(firstName, lastName, age)
   }
 
