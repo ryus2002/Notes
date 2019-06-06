@@ -22,7 +22,7 @@ else {
 
 print payment.pay(t,100)
 ```
-小弟答案︰
+小弟答案（我覺得我寫錯了...）︰
 ```
 interface tool_action
 {
