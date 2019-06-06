@@ -22,6 +22,46 @@ else {
 
 print payment.pay(t,100)
 ```
+
+嘗試用Miles大大說法寫程式
+```
+class PaymentCompanyA {
+
+  private string _COMPANY
+  
+  PaymentCompanyA(string COMPANY) {
+    _COMPANY = COMPANY
+  }
+
+  public function pay(string t, int a) {
+    return _COMPANY + ":$" + a + "to" + t
+  }
+}
+
+class PaymentCompanyB {
+
+  private string _COMPANY
+  
+  PaymentCompanyB(string COMPANY) {
+    _COMPANY = COMPANY
+  }
+  
+  public function pay(string t, int a) {
+    return _COMPANY + ":$" + a + "to" + t
+  }
+}
+
+String t = "Ant"
+if Request COMPANY is "CompanyA" then {
+  payment = new PaymentCompanyA(COMPANY) 
+}
+else {
+  payment = new PaymentCompanyB(COMPANY)
+}
+
+print payment.pay(t,100)
+```
+
 小弟答案（我覺得我寫錯了...）︰
 ```
 interface tool_action
