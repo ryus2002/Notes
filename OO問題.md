@@ -29,7 +29,7 @@ class PaymentCompany {
 
   private string _COMPANY
   
-  PaymentCompanyB(string COMPANY) {  //這行是建構子, 類似__construct
+  PaymentCompany(string COMPANY) {  //這行是建構子, 類似__construct
     _COMPANY = COMPANY
   }
   
