@@ -22,8 +22,7 @@ else {
 
 print payment.pay(t,100)
 ```
-
-嘗試用Miles大大說法寫程式
+參考答案︰
 ```
 class PaymentCompany {
 
@@ -43,8 +42,7 @@ String t = "Ant"
 payment = new PaymentCompany(Request COMPANY) 
 print payment.pay(t,100)
 ```
-
-小弟答案（我覺得我寫錯了...）︰
+其他答案（延伸出工廠方法）︰
 ```
 interface tool_action
 {
