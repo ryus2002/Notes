@@ -22,7 +22,45 @@ else {
 
 print payment.pay(t,100)
 ```
+小弟答案︰
+```
+interface tool_action
+{
+    public function pay(string CompanyName,string t, int a);
+}
 
+class PaymentCompany implements tool_action
+{
+  public function pay(string CompanyName,string t, int a);
+  {
+    return CompanyName + ":$" + a + "to" + t
+  }
+}
+
+class PaymentCompanyA {
+  public function pay(string CompanyName,string t, int a) {
+    PaymentCompany = new PaymentCompany()
+    PaymentCompany.pay(CompanyName,t,a)
+  }
+}
+
+class PaymentCompanyB {
+  public function pay(string CompanyName,string t, int a) {
+    PaymentCompany = new PaymentCompany()
+    PaymentCompany.pay(CompanyName,t,a)
+  }
+}
+
+String t = "Ant"
+if Request COMPANY is "CompanyA" then {
+  payment = new PaymentCompanyA() 
+}
+else {
+  payment = new PaymentCompanyB()
+}
+
+print payment.pay(COMPANY,t,100)
+```
 
 範例程式為虛擬碼，請試著重構以下程式, 提示:SOLID
 ```
