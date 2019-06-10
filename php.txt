@@ -5,6 +5,10 @@ $t = date('Y-m');
 然后再使用strtotime("-1 month", $t)即可
 https://blog.csdn.net/zhanghao143lina/article/details/79971650
 
+#2
+TDD測試
+https://gist.github.com/jaceju/c415c1b42daf4c589f2a
+
 SOLID 是…
 1. SRP - 單一職責原則 Single Responsibility Principle
 讓類別只有一個改變的原因，只有一種職責，一個類別只負責一件事。
