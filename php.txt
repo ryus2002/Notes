@@ -21,8 +21,14 @@ Data Providers 的參數將優先於來自所依賴的測試的參數，而非 D
 來自於所依賴的測試的參數對於每個數據集都是一樣的。
 當一個測試依賴於另外一個使用了 Data Provider 的測試時，僅當被依賴的測試至少能在一組數據上成功時，依賴於它的測試才會運行。
 
-
-
+setUp 方法與 tearDown 方法
+每個測試方法執行之前，都會先執行 setUp 方法；而結束之後，則會執行 tearDown 方法。以此例來說，順序如下：
+setUp
+testUpdateQuantitiesAndGetTotal
+tearDown
+setUp
+testUpdateQuantitiesAndGetTotal
+tearDown
 
 
 
