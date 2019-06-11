@@ -13,6 +13,19 @@ https://gist.github.com/jaceju/c415c1b42daf4c589f2a
 PHPUnit教學
 https://phpunit.de/manual/3.7/en/writing-tests-for-phpunit.html
 
+/**
+ * @dataProvider provider
+ */
+使用數據提供者的注意事項
+Data Providers 的參數將優先於來自所依賴的測試的參數，而非 DocBlock 上定義的順序。
+來自於所依賴的測試的參數對於每個數據集都是一樣的。
+當一個測試依賴於另外一個使用了 Data Provider 的測試時，僅當被依賴的測試至少能在一組數據上成功時，依賴於它的測試才會運行。
+
+
+
+
+
+
 SOLID 是…
 1. SRP - 單一職責原則 Single Responsibility Principle
 讓類別只有一個改變的原因，只有一種職責，一個類別只負責一件事。
