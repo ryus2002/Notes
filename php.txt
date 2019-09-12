@@ -294,3 +294,49 @@ SOLID 講的是同一件事
 - LKP: 避免曝露過多資訊造成用戶端因流程調整而改變
 - ISP: 降低用戶因不相關介面而被改變
 - DIP: 避免高階程式因為低階程式變而改變
+
+
+#5
+更好的if寫法
+http://blog.turn.tw/?p=83
+
+function create_one($ids, $user_id, $payment_method, 
+  $deduction_amount)
+{
+    // 抵扣金額不是整數
+    // 呼叫這個method的工程師一定哪邊搞錯了吧
+    if ( !is_integer( $deduction_amount) ){
+        throw new Exception("invalid 'deduction_amount': $deduction_amount. it's not integer.");
+    }
+ 
+    // 之前決定資料庫內用負數代表折扣金額
+    // 傳正數進來的工程師你昨天很晚睡吼
+    if ($deduction_amount > 0){
+        throw new Exception("invalid deduction amount: $deduction_amount. it can't be position");
+    }
+ 
+    // 資料庫內找不到這個$user_id
+    // 呼叫這個method的工程師你要不要再檢查一下程式碼
+    $query = $this->db
+                               ->where('id',$user_id)
+                               ->get('users');
+    if ( $query->num_rows() == 0 ){
+        throw new Exception("invalid user id: $user_id. the user doesn't exist");
+    }
+ 
+    // 公司只有接受三種付款方式
+    $acceptable_payment_method = array( 'ATM', 'at_home', 'store');
+    if ( !in_array( $payment_method, $acceptable_payment_method ) )
+    {
+        throw new Exception("invalid payment_method: $payment_method .");
+    }
+ 
+    // 繼續一串要檢查的項目
+ 
+    // 這邊終於可以把資料整理一下然後存進資料庫了
+    // 可能還是會在這裡噴出不知道什麼鬼的exception
+    // 但整段code真的好讀、好維護、又robust很多了
+ 
+    return true;
+ 
+}// end function create_one
