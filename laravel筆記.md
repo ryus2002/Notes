@@ -18,12 +18,12 @@ https://quickadminpanel.com/blog/list-of-21-artisan-make-commands-with-parameter
 php artisan make:middleware name
 ```
 
-建立controller all methods: index(), create(), store(), show(), edit(), update(), destroy().
+建立controller， all methods: index(), create(), store(), show(), edit(), update(), destroy().
 ```
 php artisan make:controller name --resource
 ```
 
-建立controller only 5 methods: index(), store(), show(), update(), destroy()
+建立controller， only 5 methods: index(), store(), show(), update(), destroy()
 ```
 php artisan make:controller name --api
 ```
