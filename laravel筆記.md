@@ -32,3 +32,7 @@ Route List
 ```
 php artisan route:list
 ```
+
+修改Auth的User.php目錄
+------------
+https://www.jianshu.com/p/c2498678a6ca
