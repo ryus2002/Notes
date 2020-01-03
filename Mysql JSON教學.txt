@@ -1,0 +1,12 @@
+https://kknews.cc/zh-tw/code/gm863nl.html
+
+-- ¬d¸ß°O¿ý 
+
+SELECT sname,JSON_EXTRACT(info,'$.age') FROM t_json; 
+
+SELECT sname,info->'$.age' FROM t_json; 
+
+-- ¬d¸ßkey 
+
+SELECT id,json_keys(info) FROM t_json;
+
