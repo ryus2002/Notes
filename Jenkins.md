@@ -7,6 +7,8 @@ Jenkins
 [Plugs插件介紹](https://plugins.jenkins.io/){:target="_blank"}.
 <a target="_blank" href=""></a>
 
+<a href="http://example.com/" target="_blank">Hello, world!</a>
+
 
 DB Table命名規則
 ------------
