@@ -4,11 +4,7 @@ Jenkins
 
 官方使用者手冊 <a target="_blank" href="https://jenkins.io/doc/book/">英文版</a> <a target="_blank" href="https://jenkins.io/zh/doc/">簡體中文版</a>
 
-[Plugs插件介紹](https://plugins.jenkins.io/){:target="_blank"}.
-<a target="_blank" href=""></a>
-
-<a href="http://example.com/" target="_blank">Hello, world!</a>
-
+<a target="_blank" href="https://plugins.jenkins.io/">Plugs插件介紹</a>
 
 DB Table命名規則
 ------------
