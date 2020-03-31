@@ -1,5 +1,6 @@
 Jenkins
 ====================================
+<a target="_blank" href="https://dotblogs.com.tw/kinanson/2017/08/17/135639">安裝方式</a>
 官方使用者手冊 <a target="_blank" href="https://jenkins.io/doc/book/">英文版</a> <a target="_blank" href="https://jenkins.io/zh/doc/">簡體中文版</a>
 
 
