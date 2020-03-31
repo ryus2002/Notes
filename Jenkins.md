@@ -34,6 +34,41 @@ CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者�
 
 2. 避免無意義的參數名稱(book1,book2,book3)
 
+
+
+GitHub Access Token
+為了讓 Jenkins 有權限能夠接收 GitHub 的 PullRequest 通知，需要產生一個 GitHub access token 給他使用。
+登入一個有寫入權限的帳號 Settings -> Developer settings -> Personal access tokens -> Generate new token，增加一個 Token 並且勾選以下權限：
+admin:repo_hook — for managing hooks (read, write and delete old ones)
+repo — to see private repos
+repo:status — to manipulate commit statuses
+設定 GitHub Webhooks
+切到 GitHub 儲存庫的頁面
+Setting -> Webhooks -> Add webhook
+在 Payload URL 輸入 jenkins 的網址，如：
+http://<your-jenkins-url>/github-webhook/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 execute:
 ```
 (O) print_page()
