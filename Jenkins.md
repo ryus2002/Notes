@@ -6,20 +6,11 @@ Jenkins
 
 <a target="_blank" href="https://plugins.jenkins.io/">Plugs插件介紹</a>
 
-DB Table命名規則
+優點
 ------------
-前面需加上專案名稱，中間的底線加或不加都可以
+可免費且合法商業使用
 
-execute:
-```
-chatconfig
-
-chat_config
-```
-這是為了盡量說明是哪個應用或者系統在使用的
-
-
-Function命名規則
+缺點
 ------------
 1. 動詞 + 名詞為佳 或 單一名詞/形容詞
 
