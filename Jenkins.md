@@ -1,6 +1,6 @@
 程式撰寫規範
 ====================================
-官方使用者手冊 <a href="https://jenkins.io/doc/book/">英文版</a> <a href="https://jenkins.io/zh/doc/">簡體中文版</a>
+官方使用者手冊 <a target="_blank" href="https://jenkins.io/doc/book/">英文版</a> <a target="_blank" href="https://jenkins.io/zh/doc/">簡體中文版</a>
 
 
 
