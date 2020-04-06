@@ -22,7 +22,7 @@ CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者�
 ![GitHub Logo](/images/2017-08-06-22-13-21.png)
 
 
-優點
+Jenkins優點
 ------------
 可免費且合法商業使用
 
@@ -30,7 +30,7 @@ CD 就是把要 Release 的程式放到正式環境去，讓真正的使用者�
 
 可完全控制系统
 
-缺點
+Jenkins缺點
 ------------
 Groovy程式 & command line 要自己寫
 
@@ -38,12 +38,15 @@ Groovy程式 & command line 要自己寫
 
 無快速構建功能
 
-其他簡易CI只要編輯yaml檔案即可，ex:
+比如CircleCI只要編輯yaml檔案即完成部署，ex:
 https://circleci.com/docs/2.0/sample-config/
 
 
-取得GitHub Access Token
+Jenkins與Github連動方法
 ------------
+
+1. 取得GitHub Access Token
+
 為了讓 Jenkins 有權限能夠接收 GitHub 的 PullRequest 通知，需要產生一個 GitHub access token 給他使用。
 
 登入一個有寫入權限的帳號 Settings -> Developer settings -> Personal access tokens -> Generate new token，增加一個 Token 並且勾選以下權限：
@@ -54,8 +57,8 @@ repo — to see private repos
 
 repo:status — to manipulate commit statuses
 
-設定 GitHub Webhooks
-------------
+2. 設定 GitHub Webhooks
+
 切到 GitHub 儲存庫的頁面
 
 Setting -> Webhooks -> Add webhook
@@ -63,6 +66,22 @@ Setting -> Webhooks -> Add webhook
 在 Payload URL 輸入 jenkins 的網址，如：
 
 http://<your-jenkins-url>/github-webhook/
+
+3. 完成設定後Git每次push就會觸發該Jenkins的Job
+
+設定每日排程
+------------
+分 - 可輸入0-59，代表幾分的時候執行
+小時 - 可輸入0-23，代表幾點的時候執行
+日 - 可輸入1-31，代表每月幾日的時候執行
+月 - 可輸入1-12，代表執行的月份
+星期 - 可輸入0-7，代表星期幾，0和7都代表星期天
+
+pipeline指令文件
+------------
+https://jenkins.io/zh/doc/book/pipeline/syntax/
+
+
 
 
 
