@@ -36,14 +36,14 @@ Groovy程式 & command line 要自己寫
 https://circleci.com/docs/2.0/sample-config/
 
 
-我會分成下面幾個步驟
+接下來會分成下面幾個步驟
 ------------
-用 Docker來安裝 Jenkins<br>
-設定Git push自動觸發Jenkins<br>
-設定前後端分離<br>
-Jenkins和Slack串接，當Jenkins部署時，Slack會發出通知
+1.用 Docker來安裝 Jenkins<br>
+2.設定Git push自動觸發Jenkins<br>
+3.設定前後端分離<br>
+4.Jenkins和Slack串接，當Jenkins部署時，Slack會發出通知
 
-用 Docker來安裝 Jenkins
+1.用Docker來安裝Jenkins
 ------------
 取得jenkins穩定版本的image
 ```
