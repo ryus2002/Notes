@@ -39,9 +39,9 @@ https://circleci.com/docs/2.0/sample-config/
 
 我會分成下面幾個步驟
 ------------
-用 Docker來安裝 Jenkins
-設定Github hook時觸發Jenkins
-設定前後端分離
+用 Docker來安裝 Jenkins<br>
+設定Github hook時觸發Jenkins<br>
+設定前後端分離<br>
 Jenkins和Slack串接，當Jenkins部署時，Slack會發出通知
 
 用 Docker來安裝 Jenkins
