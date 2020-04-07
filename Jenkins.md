@@ -46,10 +46,16 @@ Jenkins和Slack串接，當Jenkins部署時，Slack會發出通知
 
 用 Docker來安裝 Jenkins
 ------------
-安裝穩定jenkins版本
+取得jenkins穩定版本的image
 ```
 docker pull jenkins/jenkins:lts
 ```
+開啟jenkins容器<br>
+註:-v jenkins_home:/var/jenkins_home表示該目錄會持續保留，不會因為重新啟動而被還原
+```
+docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
+```
+然後可以在 http://localhost:8080 看到Jenkins運行中，初始密碼可在log中看到或可以在Jenkins安裝路徑中尋找這個檔案jenkins/secrets/initialAdminPassword
 
 
 Jenkins與Github連動方法
