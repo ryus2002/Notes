@@ -21,7 +21,7 @@ Jenkins優點
 ------------
 可免費且合法商業使用
 
-可使用的插件豐富
+擁有最齊全的插件
 
 可完全控制系统
 
@@ -35,6 +35,21 @@ Groovy程式 & command line 要自己寫
 
 比如CircleCI只要編輯yaml檔案即完成部署，ex:
 https://circleci.com/docs/2.0/sample-config/
+
+
+我會分成下面幾個步驟
+------------
+用 Docker來安裝 Jenkins
+設定Github hook時觸發Jenkins
+設定前後端分離
+Jenkins和Slack串接，當Jenkins部署時，Slack會發出通知
+
+用 Docker來安裝 Jenkins
+------------
+安裝穩定jenkins版本
+```
+docker pull jenkins/jenkins:lts
+```
 
 
 Jenkins與Github連動方法
