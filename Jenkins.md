@@ -14,6 +14,7 @@ Jenkins
 持續交付（CD）<br>
 要把已通過審查的程式放到正式環境，讓真正的使用者使用<br>
 
+![GitHub Logo](/images/3.png)
 ![GitHub Logo](/images/2017-08-06-22-13-21.png)
 
 
@@ -40,7 +41,7 @@ https://circleci.com/docs/2.0/sample-config/
 我會分成下面幾個步驟
 ------------
 用 Docker來安裝 Jenkins<br>
-設定Github hook時觸發Jenkins<br>
+設定Git push自動觸發Jenkins<br>
 設定前後端分離<br>
 Jenkins和Slack串接，當Jenkins部署時，Slack會發出通知
 
@@ -56,6 +57,13 @@ docker pull jenkins/jenkins:lts
 docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
 ```
 然後可以在 http://localhost:8080 看到Jenkins運行中，初始密碼可在log中看到或可以在Jenkins安裝路徑中尋找這個檔案jenkins/secrets/initialAdminPassword
+
+設定Git push自動觸發Jenkins
+------------
+1. 新增Job時選擇Build Triggers / GitHub hook trigger for GITScm polling
+2. 手動登入Github網站，點選專案Setting加入web-hook，畫面如下:
+
+
 
 
 Jenkins與Github連動方法
