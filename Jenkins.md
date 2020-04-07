@@ -40,8 +40,8 @@ https://circleci.com/docs/2.0/sample-config/
 ------------
 1.用 Docker來安裝 Jenkins<br>
 2.設定Git push自動觸發Jenkins<br>
-3.設定前後端分離<br>
-4.Jenkins和Slack串接，當Jenkins部署時，Slack會發出通知
+3.Jenkins和Line串接，當Jenkins部署時，Line會發出通知
+4.Pipeline語法介紹
 
 1.用Docker來安裝Jenkins
 ------------
@@ -63,35 +63,11 @@ docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins
 
 ![GitHub Logo](/images/3.png)
 
-
-
-
-Jenkins與Github連動方法
+3.Jenkins和Line串接，當Jenkins部署時，Line會發出通知
 ------------
+參考網址<br>
+https://engineering.linecorp.com/en/blog/using-line-notify-to-send-messages-to-line-from-the-command-line/
 
-1. 取得GitHub Access Token
-
-為了讓 Jenkins 有權限能夠接收 GitHub 的 PullRequest 通知，需要產生一個 GitHub access token 給他使用。
-
-登入一個有寫入權限的帳號 Settings -> Developer settings -> Personal access tokens -> Generate new token，增加一個 Token 並且勾選以下權限：
-
-admin:repo_hook — for managing hooks (read, write and delete old ones)
-
-repo — to see private repos
-
-repo:status — to manipulate commit statuses
-
-2. 設定 GitHub Webhooks
-
-切到 GitHub 儲存庫的頁面
-
-Setting -> Webhooks -> Add webhook
-
-在 Payload URL 輸入 jenkins 的網址，如：
-
-http://<your-jenkins-url>/github-webhook/
-
-3. 完成設定後Git每次push就會觸發該Jenkins的Job
 
 設定每日排程
 ------------
