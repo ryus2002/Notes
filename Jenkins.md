@@ -14,7 +14,7 @@ Jenkins
 持續交付（CD）<br>
 要把已通過審查的程式放到正式環境，讓真正的使用者使用<br>
 
-![GitHub Logo](/images/2.png)
+![GitHub Logo](/images/flow.png)
 
 Jenkins優點
 ------------
