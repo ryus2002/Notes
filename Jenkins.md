@@ -14,9 +14,7 @@ Jenkins
 持續交付（CD）<br>
 要把已通過審查的程式放到正式環境，讓真正的使用者使用<br>
 
-![GitHub Logo](/images/3.png)
-![GitHub Logo](/images/2017-08-06-22-13-21.png)
-
+![GitHub Logo](/images/2.png)
 
 Jenkins優點
 ------------
@@ -60,8 +58,10 @@ docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins
 
 設定Git push自動觸發Jenkins
 ------------
-1. 新增Job時選擇Build Triggers / GitHub hook trigger for GITScm polling
-2. 手動登入Github網站，點選專案Setting加入web-hook，畫面如下:
+1. 新增Job時選擇Build Triggers / GitHub hook trigger for GITScm polling<br>
+2. 手動登入Github網站，點選專案Setting加入web-hook，畫面如下:<br>
+
+![GitHub Logo](/images/3.png)
 
 
 
