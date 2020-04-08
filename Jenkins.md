@@ -63,7 +63,7 @@ docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins
 ```
 docker exec -it --user root 7b7a3aee56d8 /bin/bash
 ```
-在容器內建置需要的環境，也能整合成 Dockerfile 來安装
+在容器內建置需要的環境
 註:linux為Debian，下述皆為Debian的指令
 ```
 apt-get update
@@ -93,6 +93,14 @@ curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
 #讓composer支援cache
 composer global require hirak/prestissimo
 ```
+以上的指令也可編輯成Dockerfile.yml檔案，再執行
+```
+docker-compose up 
+```
+Dockerfile的寫法可參考這支<br>
+https://github.com/DevinY/jenkins/blob/master/Dockerfile
+
+
 3.設定Git push自動觸發Jenkins
 ------------
 1. 在Jenkins新增Job時選擇Build Triggers / GitHub hook trigger for GITScm polling<br>
