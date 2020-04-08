@@ -55,7 +55,11 @@ docker pull jenkins/jenkins:lts
 ```
 docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
 ```
-然後可以在 http://localhost:8080 看到Jenkins運行中，初始密碼可在log中看到或可以在Jenkins安裝路徑中尋找這個檔案jenkins/secrets/initialAdminPassword
+然後可以在 http://localhost:8080 看到Jenkins運行中，<br>
+初始密碼可在log中看到或執行
+```
+docker-compose logs ci 
+```
 
 2.Jenkins容器安裝php、php-curl、compose等指令
 ------------
