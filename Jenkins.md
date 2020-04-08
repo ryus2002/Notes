@@ -56,7 +56,7 @@ docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins
 ```
 然後可以在 http://localhost:8080 看到Jenkins運行中，初始密碼可在log中看到或可以在Jenkins安裝路徑中尋找這個檔案jenkins/secrets/initialAdminPassword
 
-設定Git push自動觸發Jenkins
+2.設定Git push自動觸發Jenkins
 ------------
 1. 在Jenkins新增Job時選擇Build Triggers / GitHub hook trigger for GITScm polling<br>
 2. 手動登入Github網站，點選專案Setting加入web-hook，畫面如下:<br>
