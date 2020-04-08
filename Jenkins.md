@@ -50,7 +50,7 @@ https://circleci.com/docs/2.0/sample-config/
 docker pull jenkins/jenkins:lts
 ```
 開啟jenkins容器<br>
-註:-v jenkins_home:/var/jenkins_home表示該目錄會持續保留，不會因為重新啟動而被還原
+註:-v jenkins_home:/var/jenkins_home表示本機jenkins_home(本機安裝目錄)和容器目錄(/var/jenkins_home)共用
 ```
 docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
 ```
