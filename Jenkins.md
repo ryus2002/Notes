@@ -39,6 +39,7 @@ https://circleci.com/docs/2.0/sample-config/
 接下來會分成下面幾個步驟
 ------------
 1.用 Docker來安裝 Jenkins<br>
+2.Jenkins容器安裝php、php-curl、compose等指令
 2.設定Git push自動觸發Jenkins<br>
 3.Jenkins和Line串接，當Jenkins部署時，Line會發出通知<br>
 4.Pipeline語法介紹<br>
@@ -56,14 +57,50 @@ docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins
 ```
 然後可以在 http://localhost:8080 看到Jenkins運行中，初始密碼可在log中看到或可以在Jenkins安裝路徑中尋找這個檔案jenkins/secrets/initialAdminPassword
 
-2.設定Git push自動觸發Jenkins
+2.Jenkins容器安裝php、php-curl、compose等指令
+------------
+以root進入Jenkins容器中
+```
+docker exec -it --user root 7b7a3aee56d8 /bin/bash
+```
+在容器內建置需要的環境，也能整合成 Dockerfile 來安装
+註:linux為Debian，下述皆為Debian的指令
+```
+apt-get update
+
+#安裝sudo指令
+apt-get install sudo
+
+#Debian 9安裝php7.3前置步驟
+sudo apt-get install software-properties-common
+sudo apt-get install apt-transport-https lsb-release ca-certificates -y
+sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
+sudo apt-get update
+
+#安裝php7.3-fpm
+sudo apt-get install php7.3-fpm -y
+
+#以及你還所需要的其他的php7.3套件，例如：
+sudo apt-get install php7.3-curl php7.3-common php7.3-json php7.3-gd php7.3-cli php7.3-mbstring php7.3-xml php7.3-opcache php7.3-mysql -y
+
+#查看是否安裝好你所需要的PHP版本
+php -v
+
+#安裝composer指令
+curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+#讓composer支援cache
+composer global require hirak/prestissimo
+```
+3.設定Git push自動觸發Jenkins
 ------------
 1. 在Jenkins新增Job時選擇Build Triggers / GitHub hook trigger for GITScm polling<br>
 2. 手動登入Github網站，點選專案Setting加入web-hook，畫面如下:<br>
 
 ![GitHub Logo](/images/3.png)
 
-3.Jenkins和Line串接，當Jenkins部署時，Line會發出通知
+4.Jenkins和Line串接，當Jenkins部署時，Line會發出通知
 ------------
 參考網址<br>
 https://engineering.linecorp.com/en/blog/using-line-notify-to-send-messages-to-line-from-the-command-line/
