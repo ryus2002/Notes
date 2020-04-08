@@ -40,9 +40,9 @@ https://circleci.com/docs/2.0/sample-config/
 ------------
 1.用 Docker來安裝 Jenkins<br>
 2.Jenkins容器安裝php、php-curl、compose等指令
-2.設定Git push自動觸發Jenkins<br>
-3.Jenkins和Line串接，當Jenkins部署時，Line會發出通知<br>
-4.Pipeline語法介紹<br>
+3.設定Git push自動觸發Jenkins<br>
+4.Jenkins和Line串接，當Jenkins部署時，Line會發出通知<br>
+5.Pipeline語法介紹<br>
 
 1.用Docker來安裝Jenkins
 ------------
@@ -105,7 +105,155 @@ composer global require hirak/prestissimo
 參考網址<br>
 https://engineering.linecorp.com/en/blog/using-line-notify-to-send-messages-to-line-from-the-command-line/
 
+5.Pipeline語法介紹
+------------
+pipeline指令文件<br>
+https://jenkins.io/zh/doc/book/pipeline/syntax/
 
+```
+pipeline {
+    agent any 
+
+    stages {
+        stage('下載') { 
+            steps { 
+                script {
+                    try {
+		        git url: 'https://github.com/ryus2002/test_circleci.git', branch: 'master'
+                    } catch(Exception err) {
+                        echo err.getMessage()
+                        echo err.toString()
+                        warnError('git clone失敗') {
+                            echo '失敗後要做的事'
+                            //sh ''
+                        }
+                        aborted 'git clone失敗'
+                    }
+                }
+            }
+        }
+        stage('初始化') { 
+            steps { 
+                script {
+                    try {
+			            sh 'cp .env.example .env'
+                    	sh 'composer install -vvv'
+                	    sh 'php artisan key:generate'
+                    } catch(Exception err) {
+                        echo err.getMessage()
+                        echo err.toString()
+                        warnError('初始化失敗') {
+                            echo '失敗後要做的事'
+                        }
+                        aborted '初始化失敗'
+                    }
+                }
+            }
+        }
+        stage('啟動'){
+            steps {
+                script {
+                    try {
+	                sh 'php artisan serve&'
+        	        sh 'php artisan view:clear'
+                    } catch(Exception err) {
+                        echo err.getMessage()
+                        echo err.toString()
+                        warnError('啟動失敗') {
+                            echo '失敗後要做的事'
+                        }
+                        aborted '啟動失敗'
+                    }
+                }
+            }
+        }
+        stage('phpunit測試'){
+            steps {
+                script {
+                    try {
+	                sh 'vendor/bin/phpunit'
+                    } catch(Exception err) {
+                        echo err.getMessage()
+                        echo err.toString()
+                        warnError('phpunit測試失敗') {
+                            echo '失敗後要做的事'
+                        }
+                        aborted 'phpunit測試失敗'
+                    }
+                }
+            }
+        }
+        stage('dusk測試'){
+            steps {
+                script {
+                    try {
+	                sh 'php artisan dusk'
+                    } catch(Exception err) {
+                        echo err.getMessage()
+                        echo err.toString()
+                        warnError('dusk測試失敗') {
+                            echo '失敗後要做的事'
+                        }
+                        aborted 'dusk測試失敗'
+                    }
+                }
+            }
+        }
+        stage('測試migration'){
+            steps {
+                script {
+                    try {
+        	        //sh 'php artisan migrate:fresh'
+	                sh 'php artisan'
+                    } catch(Exception err) {
+                        echo err.getMessage()
+                        echo err.toString()
+                        warnError('測試migration失敗') {
+                            echo '失敗後要做的事'
+                        }
+                        aborted '測試migration失敗'
+                    }
+                }
+            }
+        }
+        stage('測試database seeder'){
+             steps {
+                script {
+                    try {
+	                sh 'php artisan db:seed'
+                    } catch(Exception err) {
+                        echo err.getMessage()
+                        echo err.toString()
+                        warnError('測試database seeder失敗') {
+                            echo '失敗後要做的事'
+                        }
+                        aborted '測試database seeder失敗'
+                    }
+                }
+            }
+        }
+        stage('部署') {
+            steps {
+                script {
+                    try {
+	                sh 'echo 可執行rsync哦'
+                    } catch(Exception err) {
+                        echo err.getMessage()
+                        echo err.toString()
+                        warnError('部署失敗') {
+                            echo '失敗後要做的事'
+                        }
+                        aborted '部署失敗'
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+
+6.其他功能
 設定每日排程
 ------------
 分 - 可輸入0-59，代表幾分的時候執行
@@ -114,9 +262,7 @@ https://engineering.linecorp.com/en/blog/using-line-notify-to-send-messages-to-l
 月 - 可輸入1-12，代表執行的月份
 星期 - 可輸入0-7，代表星期幾，0和7都代表星期天
 
-pipeline指令文件
-------------
-https://jenkins.io/zh/doc/book/pipeline/syntax/
+
 
 
 
@@ -176,111 +322,5 @@ Job 內容 - scripts 關鍵字
 
 
 
-
-
-
-execute:
-```
-(O) print_page()
-
-(O) get_memberid()
-
-(X) get_memberid(x) 參數名x無意義
-
-(O) get_memberid(NOTE_NO)
-```
-
-Class命名規則
-------------
-Class Name類別名稱為名詞/形容詞
-
-Class Method 類別方法為動詞
-
-execute:
-```
-public class String{ 
-
-    public int CompareTo(...){...}; 
-
-    public string[] Spilt(...){...}; 
-}
-```
-
-優秀程式設計師需具備技能 (由簡到易排列) 
-------------
-- 善用工具快速開發能力(優秀的IDE/除錯工具/Composer)
-- 善用版本控制工具及提交正確有意義的提交紀錄(Commit Log)
-- 有效避免網頁攻擊手法(SQL Injection/Command Injection/XSS/CSRF/SSRF)
-- 瞭解並善用Session/Cookie/Web Tokens等常見認證機制
-- 瞭解並善用Communication Message(JSON/MessagePack/Protocols Buffers/etc.)
-- 瞭解並善用RDBMS資料庫Schema設計及最佳化技巧
-- 撰寫可維護的程式碼(可讀性/模組化/易構性)
-- 規格、說明及測試文件編寫經驗及能力
-- 自我驗證程式/程序正確的習慣與技能(TDD/BDD/E2E Testing/etc.)
-- 瞭解並善用設計模式Design Patterns(Singleton/Dependency Injection/Factory/etc.)
-- 重構既有軟體架構/程式能力(Refactoring)
-- 瞭解並善用資料結構Data Strucures(Array/Linked List/Hash/etc.)
-- 瞭解並善用排序演算法Efficient Sorting Algorithms(Quicksort/Heapsort/Mergesort)
-
-建議同仁先提出目前有哪些問題，再一起思考如何解決問題
-
-
-
-DB連線方式請統一使用同一個Class，須避免直接寫在程式碼中
-------------
-(X)
-
-![Image text](http://10.10.1.132/twhg-rd/programming-code-rules/blob/master/pic/a5.png)
-
-避免複製一份重複的檔案
-------------
-![Image text](http://10.10.1.132/twhg-rd/programming-code-rules/blob/master/pic/a7.png)
-
-
-
-URL API若有隱密性的資料，比如客戶姓名、客戶電話等，需使用Web token驗證
-------------
-JWT教學，之後會補程式碼上傳
-
-https://medium.com/mr-efacani-teatime/%E6%B7%BA%E8%AB%87jwt%E7%9A%84%E5%AE%89%E5%85%A8%E6%80%A7%E8%88%87%E9%81%A9%E7%94%A8%E6%83%85%E5%A2%83-301b5491b60e
-
-
-Google關鍵字查詢 PHP框架比較
-------------
-![Image text](http://10.10.1.132/twhg-rd/programming-code-rules/blob/master/pic/a8.png)
-
-
-API 安全性 ***很重要***
-------------
-1. Web Token
-2. API KEY (OATH2)
-3. SSL
-4. 防火牆白名單 請注意ajax和curl的差別，看情境使用ajax是只client端ip和server之間的連線，curl是只兩台主機之間的連線
-5. PHP簡易阻擋IP的方式 https://www.opencli.com/php/php-get-real-ip
-6. API Manager
-7. 若會產生比如csv的檔案，請注意放到對外主機上也有可能被爬蟲抓到或是被直接下載
-
-Demo1 
-
-JWT簡易版本
-
-http://house.nhg.tw/admin/ryan/jwt_client1.php
-
-Demo2 
-
-JWT雙Token
-
-access_token 30天有效，無效時則需重新登入
-
-refresh_token 2小時有效，無效時若access_token仍有效時，將重新派發一個refresh_token給Client
-
-http://house.nhg.tw/admin/ryan/jwt_client4.php
-
-
-
-
-正式環境安裝laravel
-------------
-composer install 要加 --no-dev，以及 APP_ENV 要設定為 production，debug 要關掉，.env也要改，想辦法用log或使用local環境
 
 
