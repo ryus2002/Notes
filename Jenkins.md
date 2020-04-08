@@ -93,7 +93,7 @@ curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
 #讓composer支援cache
 composer global require hirak/prestissimo
 ```
-以上的指令也可編輯成Dockerfile.yml檔案，再執行
+以上的指令也可編輯成Dockerfile.yml檔案，再執行下述指令完成安裝
 ```
 docker-compose up 
 ```
