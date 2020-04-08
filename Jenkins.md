@@ -40,8 +40,8 @@ https://circleci.com/docs/2.0/sample-config/
 ------------
 1.用 Docker來安裝 Jenkins<br>
 2.設定Git push自動觸發Jenkins<br>
-3.Jenkins和Line串接，當Jenkins部署時，Line會發出通知
-4.Pipeline語法介紹
+3.Jenkins和Line串接，當Jenkins部署時，Line會發出通知<br>
+4.Pipeline語法介紹<br>
 
 1.用Docker來安裝Jenkins
 ------------
