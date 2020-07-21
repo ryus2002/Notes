@@ -7,3 +7,50 @@
 
 優化Mysql教學
 https://xianyunyh.gitbooks.io/php-interview/Mysql/MySQL%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86%E5%8F%8A%E6%85%A2%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96.html
+
+/*********************************************/
+
+MySQL 地雷區
+雷區 1 : 使用 != 、 <>、NOT 查詢會變全掃
+SELECT * FROM user WHERE age != 20 ( bad 全掃 )
+SELECT * FROM user WHERE age <> 20 ( bad 全掃 )
+SELECT * FROM user WHERE age NOT IN(20) ( bad 全掃 )
+雷區 2 : 用 like 且 % 在前面有索引也會變全掃
+如果在 name 有建立索引，下面這種 sql 還是會變全掃。
+
+SELECT * FROM user WHERE name like '%-Mark' ( bad 全掃 )
+雷區 3 : 誤用 or 時會變全掃
+索引欄位: {age}
+
+SELECT * FROM user WHERE age = 18 OR name = 'C-Ian'; ( bad 全掃 )
+
+索引欄位: {age},{name} 
+
+SELECT * FROM user WHERE age = 18 OR name = 'C-Ian'; ( good 索引 )
+但是如果是用 and 則反之。
+
+索引欄位: {age}
+
+SELECT * FROM user WHERE age = 18 AND name = 'C-Ian'; ( good 索引 )
+雷區 4. 在 WHERE 欄位進行運算
+索引欄位: {age}
+
+SELECT * FROM user WHERE age/2 = 18; ( bad 全掃 )
+
+SELECT * FROM user WHERE age = 18*2; ( good 索引 )
+雷區 5 : 使用一些函數
+下面簡單以 rand() 這方法來說明，當你使用它時，它就是一定跑全掃
+
+SELECT * FROM test.user where age >= RAND(); ( bad 全掃 )
+雷區 6 : SELECT * FROM
+因為這樣可能會讓你所建立的『 覆蓋索引 』失效，導致要先至 secondary index 查找再去。 clustered Index 抓資料。
+
+索引欄位: {name}
+
+SELECT * FROM user; ( bad 會走 secondary index 再至 clustered Index )
+
+SELECT name FROM user; ( good 只會走 secondary index )
+雷區 7 : 使用 ORDER BY RAND()
+當你確定資料量非常小的情況下使用還行，但是資料量大時，你資料庫一定會倒。如果真的要做請把資料拉到應用層在做，資料庫真的非常的忙。
+
+SELECT * FROM test.user where age <= 18 ORDER BY RAND(); ( bad 會需要耗費空間排序 )
