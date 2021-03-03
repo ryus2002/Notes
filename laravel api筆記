@@ -1,0 +1,12 @@
+產生Model
+php artisan make:model Animal -rmc
+
+後方 -rmc 的意思是在建立Model 同時建立 
+Migration
+Controller ( r 的意思是載入預設CRUD方法)
+
+總共產生三個檔案
+
+database/migrations/2019_08_22_201730_create_animals_table.php (Migration)
+app/Http/Controllers/AnimalController.php (Controller)
+app/Animal.php (Model)
