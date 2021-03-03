@@ -1,0 +1,4 @@
+在Windows安裝Docker時
+
+需先注意他是用Linux Containers還是Windows Containers模式，建議採用Linux Containers模式
+https://docs.microsoft.com/zh-tw/virtualization/windowscontainers/quick-start/quick-start-windows-10-linux
