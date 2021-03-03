@@ -2,3 +2,138 @@
 
 需先注意他是用Linux Containers還是Windows Containers模式，建議採用Linux Containers模式
 https://docs.microsoft.com/zh-tw/virtualization/windowscontainers/quick-start/quick-start-windows-10-linux
+
+
+laradock教學
+https://medium.com/@ms0680146/docker%E5%BB%BA%E7%BD%AElaravel%E7%92%B0%E5%A2%83-windows-636460c2ecb7
+
+新增站點的方式
+
+把程式放在
+cd D:\docker\Projects\ 這個目錄下
+
+cd d:/docker/laradock/apache2/sites
+
+cp sample.conf.example ecommerce.conf
+
+修改ecommerce.conf
+server name 是站台的網址；root 是專案的 Document Root。
+
+新增hosts
+
+重啟Container
+cd D:\docker\laradock
+docker-compose down
+docker-compose build apache2 mysql workspace
+docker-compose up -d apache2 mysql workspace
+
+
+docker-compose up -d caddy mysql workspace
+=================================================
+若要執行migrate需以docker進入容器再執行
+docker-compose exec workspace bash
+php artisan migrate
+=================================================
+常用指令
+php artisan make:controller PhotoController --resource
+php artisan miake:model Models\games
+php artisan make:request StoreBlogPost
+php artisan route:list
+====================================================================
+
+開機啟動
+docker update --restart=always 容器ID
+
+開機關閉
+docker update --restart=no 容器ID
+
+=================================================
+
+docker備份
+docker save -o mytomcat.tar 容器名稱
+會出現mytomcat.tar檔案
+把tar檔案帶回家
+docker load -i mytomcat.tar
+就完成了
+
+=================================================
+
+目前在用的docker run 
+
+docker-compose up -d nginx mysql workspace jenkins
+
+
+
+
+//======================================================
+
+Docker + lamp 教學
+http://localhost:40091/
+D:\docker\LAMP
+
+
+https://jahentao.gitbook.io/k8s/ji-lu-docker-bu-shu-lamp-guo-cheng
+
+//======================================================
+
+Docker + laravel + laradock教學
+目錄: D:\docker\laradock
+https://www.itread01.com/content/1557986405.html
+
+Docker + laravel + laradock + hosts修改
+http://blog.test/
+
+//======================================================
+
+
+
+
+取得 Container ID
+docker ps -a
+
+終止 Container
+docker container stop a7d3fc447e45
+
+列出所有 container
+docker container ls -a
+
+啟動容器
+docker container start <CONTAINER ID / CONTAINER NAMES>
+
+重新啟動容器
+docker container restart <CONTAINER ID / CONTAINER NAMES>
+
+
+
+
+
+一切準備就緒，此時便可以建立 docker container 及執行 LAMP 了。先輸入以下指令並將 local port 定為 49001。
+——————
+docker run -d -p 49001:80 dockerfiles/centos-lamp
+
+docker run -d --name=test -p 9090:80 -p 33062:3306 -v D:\docker\LAMP:/var/www/html tutum/lamp
+
+#D:\docker\LAMP目錄新增Dockerfile
+#內容寫上
+FROM tutum/lamp:latest
+RUN rm -fr /app && git clone https://github.com/jimersylee/ThinkPHP3.2.3Custom.git /app
+EXPOSE 80 3306
+CMD ["/run.sh"]
+
+ps:其中https://github.com/jimersylee/ThinkPHP3.2.3Custom.git是我在github上找到的一个thinkphp3.2.3项目 可換成CI項目
+
+
+#建置自己的images
+docker build -t dockerpool/my-lamp-app . 
+#填上自己想要的目錄 D:\docker\LAMP:/var/www/html 
+docker run -d --name=test -p 40092:80 -p 33062:3306 -v D:\docker\LAMP:/var/www/html dockerpool/my-lamp-app
+
+docker run --net="host" -d --name=wending_ci -p 40092:80 -p 33062:3306 -v D:\docker\wending_ci:/var/www/html dockerpool/wending_ci
+
+docker run -d --name=laravel -p 40092:80 -p 33062:3306 -v D:\docker\laravel:/var/www/html dockerpool/laravel
+
+
+docker run --net = "host"
+
+larave 程式寫在這裡，且ports設定成  0.0.0.0:40092->80/tcp, 0.0.0.0:33062->3306/tcp
+可是這個docker laravel的程式無法連到Azure的Mysql和本機的Xampp Mysql 3306@@
