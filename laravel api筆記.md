@@ -106,8 +106,11 @@ class User extends Model
 }
 ```
 >這邊是常用的幾個變數
+>
 >$fillable 若是你要在 Controller 內操作的欄位，就放到這個變數內。
+>
 >$hidden 有時候一些比較需要隱藏的欄位例如密碼，就會放在這個變數內。
+>
 >$timestamps Laravel 的 Migration 預設幫你建好 created_at、updated_at 兩個欄位，在你進行資料的新增以及修改時也會自動寫進這兩個欄位，如果你不需要的話，就可以將這個變數改為 false。
 
 
