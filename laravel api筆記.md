@@ -1,4 +1,4 @@
-#參考網址
+# 參考網址
 
 https://ithelp.ithome.com.tw/articles/10215878
 
@@ -6,8 +6,8 @@ https://angela52799.medium.com/php-%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE%E8%88%87
 
 https://iter01.com/507705.html
 
-#產生Model
-##後方 -rmc 的意思是在建立Model 同時建立 Migration Controller ( r 的意思是載入預設CRUD方法)
+# 產生Model
+## 後方 -rmc 的意思是在建立Model 同時建立 Migration Controller ( r 的意思是載入預設CRUD方法)
 ```
 php artisan make:model Animal -rmc
 ```
