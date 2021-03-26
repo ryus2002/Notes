@@ -11,17 +11,16 @@ https://iter01.com/507705.html
 ```
 php artisan make:model Animal -rmc
 ```
-
-//總共產生三個檔案
+## 總共產生三個檔案
 database/migrations/2019_08_22_201730_create_animals_table.php (Migration)
 app/Http/Controllers/AnimalController.php (Controller)
 app/Animal.php (Model)
 
 
-//生成 index() show() store() update() destory() create() edit()
+## 生成 index() show() store() update() destory() create() edit()
 php artisan make:controller api/UserInfoController --resource
 
-//生成 index() show() store() update() destory()
+## 生成 index() show() store() update() destory()
 php artisan make:controller api/UserInfoController --api
 
 
