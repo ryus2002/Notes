@@ -175,7 +175,7 @@ php artisan make:controller api/UserInfoController --resource
 php artisan make:controller api/UserInfoController --api
 ```
 
-> 接下來打開 api.php 設定路由。
+# 接下來打開 api.php 設定路由。
 ```
 Route::apiResource('animal', 'AnimalController');
 
