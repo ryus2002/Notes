@@ -52,7 +52,7 @@ php artisan route:list
 php artisan config:clear
 ```
 
-## 建置資料表
+# 建置資料表
 ```
 php artisan migrate
 ```
