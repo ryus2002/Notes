@@ -13,11 +13,11 @@ php artisan make:model Animal -rmc
 ```
 > 總共產生三個檔案
 > 
-> database/migrations/2019_08_22_201730_create_animals_table.php (Migration)
-> 
-> app/Http/Controllers/AnimalController.php (Controller)
-> 
-> app/Animal.php (Model)
+>> database/migrations/2019_08_22_201730_create_animals_table.php (Migration)
+>> 
+>> app/Http/Controllers/AnimalController.php (Controller)
+>> 
+>> app/Animal.php (Model)
 
 > 生成 index() show() store() update() destory() create() edit()
 ```
@@ -107,8 +107,6 @@ public function up()
     }
 ```
 
-> 資料表的 create (建立)以及 rollback (回滾)
-> 
 > 程式碼 function 裡面 up 代表的是執行 Migrate 時的動作。程式寫好後便可執行以下指令建立資料表囉！
 ```
 php artisan migrate
