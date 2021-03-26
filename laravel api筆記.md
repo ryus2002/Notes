@@ -88,6 +88,30 @@ php artisan make:model Animal -rmc
 >> 
 >> app/Animal.php (Model)
 
+>產生 Model 的時候順便建資料表
+```
+php artisan make:model User -m
+```
+>接下來可以進入到 app/Models/User.php 這個 Model 檔案裡面，Laravel 的 Model 所繼承的常數都可以在這邊直接修改。
+```
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    protected $fillable = ['name'];
+}
+```
+>這邊是常用的幾個變數
+>$fillable 若是你要在 Controller 內操作的欄位，就放到這個變數內。
+>$hidden 有時候一些比較需要隱藏的欄位例如密碼，就會放在這個變數內。
+>$timestamps Laravel 的 Migration 預設幫你建好 created_at、updated_at 兩個欄位，在你進行資料的新增以及修改時也會自動寫進這兩個欄位，如果你不需要的話，就可以將這個變數改為 false。
+
+
+# 產生Controller
 > 生成 index() show() store() update() destory() create() edit()
 ```
 php artisan make:controller api/UserInfoController --resource
