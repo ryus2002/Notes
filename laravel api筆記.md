@@ -74,6 +74,9 @@ php artisan migrate:rollback
     
 # 產生Model
 > 後方 -rmc 的意思是在建立Model 同時建立 Migration Controller ( r 的意思是載入預設CRUD方法)
+> r=>建立Controller
+> m=>建立資料表
+> c=>建立資料連接層
 ```
 php artisan make:model Animal -rmc
 ```
