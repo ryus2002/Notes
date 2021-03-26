@@ -47,7 +47,7 @@ Route::apiResource('animal', 'AnimalController')->except([
 php artisan route:list
 ```
 
-# ENV若有修改時，使用 (要先中斷php artisan serve)
+## ENV若有修改時，使用 (要先中斷php artisan serve)
 ```
 php artisan config:clear
 ```
