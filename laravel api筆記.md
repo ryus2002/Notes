@@ -19,17 +19,17 @@ php artisan make:model Animal -rmc
 > 
 > app/Animal.php (Model)
 
-## 生成 index() show() store() update() destory() create() edit()
+> 生成 index() show() store() update() destory() create() edit()
 ```
 php artisan make:controller api/UserInfoController --resource
 ```
 
-## 生成 index() show() store() update() destory()
+> 生成 index() show() store() update() destory()
 ```
 php artisan make:controller api/UserInfoController --api
 ```
 
-## 接下來打開 api.php 設定路由。
+> 接下來打開 api.php 設定路由。
 ```
 Route::apiResource('animal', 'AnimalController');
 
@@ -41,12 +41,12 @@ Route::apiResource('animal', 'AnimalController')->except([
     'create', 'store', 'update', 'destroy'
 ]);
 ```
-## 查詢目前的路由
+> 查詢目前的路由
 ```
 php artisan route:list
 ```
 
-## ENV若有修改時，使用 (要先中斷php artisan serve)
+> ENV若有修改時，使用 (要先中斷php artisan serve)
 ```
 php artisan config:clear
 ```
@@ -55,19 +55,19 @@ php artisan config:clear
 ```
 php artisan migrate
 ```
->> 建立animals資料表
+> 建立animals資料表
 ```
 php artisan make:migration create_animals_table --create=animals
 ```
-## 在animals新增species欄位
+> 在animals新增species欄位
 ```
 php artisan make:migration add_species_column_to_table --table=animals
 ```
-## 在animals修改sex欄位
+> 在animals修改sex欄位
 ```
 php artisan make:migration alter_sex_column_of_table --table=animals
 ```
-## 可以參考官網的說明 https://laravel.com/docs/5.8/migrations#columns
+> 可以參考官網的說明 https://laravel.com/docs/5.8/migrations#columns
 
 ```
 public function up()
@@ -107,13 +107,14 @@ public function up()
     }
 ```
 
-# 資料表的 create (建立)以及 rollback (回滾)
-## 程式碼 function 裡面 up 代表的是執行 Migrate 時的動作。程式寫好後便可執行以下指令建立資料表囉！
+> 資料表的 create (建立)以及 rollback (回滾)
+> 
+> 程式碼 function 裡面 up 代表的是執行 Migrate 時的動作。程式寫好後便可執行以下指令建立資料表囉！
 ```
 php artisan migrate
 ```
 
-## 而在 down 內則代表資料表的 rollback (回滾)時會執行的程式，執行 rollback 指令如下。
+> 而在 down 內則代表資料表的 rollback (回滾)時會執行的程式，執行 rollback 指令如下。
 ```
 php artisan migrate:rollback
 ```
