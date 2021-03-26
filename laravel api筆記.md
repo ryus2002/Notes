@@ -52,11 +52,11 @@ php artisan route:list
 php artisan config:clear
 ```
 
-# 建置資料表
+# 資料表建置
 ```
 php artisan migrate
 ```
-## 建立animals資料表
+>> 建立animals資料表
 ```
 php artisan make:migration create_animals_table --create=animals
 ```
@@ -68,8 +68,6 @@ php artisan make:migration add_species_column_to_table --table=animals
 ```
 php artisan make:migration alter_sex_column_of_table --table=animals
 ```
-
-# 資料表建置
 ## 可以參考官網的說明 https://laravel.com/docs/5.8/migrations#columns
 
 ```
