@@ -42,12 +42,17 @@ php artisan route:list
 //ENV若有修改時，使用 (要先中斷php artisan serve)
 php artisan config:clear
 
-database/migrations/2019_08_22_201730_create_animals_table.php
+//建置資料表
+php artisan migrate
+//建立animals資料表
+php artisan make:migration create_animals_table --create=animals
+//在animals新增species欄位
+php artisan make:migration add_species_column_to_table --table=animals
+//在animals修改sex欄位
+php artisan make:migration alter_sex_column_of_table --table=animals
 
-/animal/database/migrations/2019_08_22_201730_create_animals_table.php
 //資料表建置
 //可以參考官網的說明 https://laravel.com/docs/5.8/migrations#columns
-
 public function up()
     {
         Schema::create('animals', function (Blueprint $table) {
@@ -63,6 +68,5 @@ public function up()
         });
     }
 
-//建置資料表
-php artisan migrate
+
     
