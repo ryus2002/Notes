@@ -6,51 +6,6 @@ https://angela52799.medium.com/php-%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE%E8%88%87
 
 https://iter01.com/507705.html
 
-# 產生Model
-> 後方 -rmc 的意思是在建立Model 同時建立 Migration Controller ( r 的意思是載入預設CRUD方法)
-```
-php artisan make:model Animal -rmc
-```
-> 總共產生三個檔案
-> 
->> database/migrations/2019_08_22_201730_create_animals_table.php (Migration)
->> 
->> app/Http/Controllers/AnimalController.php (Controller)
->> 
->> app/Animal.php (Model)
-
-> 生成 index() show() store() update() destory() create() edit()
-```
-php artisan make:controller api/UserInfoController --resource
-```
-
-> 生成 index() show() store() update() destory()
-```
-php artisan make:controller api/UserInfoController --api
-```
-
-> 接下來打開 api.php 設定路由。
-```
-Route::apiResource('animal', 'AnimalController');
-
-Route::apiResource('animal', 'AnimalController')->only([
-    'index', 'show'
-]);
-
-Route::apiResource('animal', 'AnimalController')->except([
-    'create', 'store', 'update', 'destroy'
-]);
-```
-> 查詢目前的路由
-```
-php artisan route:list
-```
-
-> ENV若有修改時，使用 (要先中斷php artisan serve)
-```
-php artisan config:clear
-```
-
 # 資料表建置
 ```
 php artisan migrate
@@ -117,3 +72,48 @@ php artisan migrate
 php artisan migrate:rollback
 ```
     
+# 產生Model
+> 後方 -rmc 的意思是在建立Model 同時建立 Migration Controller ( r 的意思是載入預設CRUD方法)
+```
+php artisan make:model Animal -rmc
+```
+> 總共產生三個檔案
+> 
+>> database/migrations/2019_08_22_201730_create_animals_table.php (Migration)
+>> 
+>> app/Http/Controllers/AnimalController.php (Controller)
+>> 
+>> app/Animal.php (Model)
+
+> 生成 index() show() store() update() destory() create() edit()
+```
+php artisan make:controller api/UserInfoController --resource
+```
+
+> 生成 index() show() store() update() destory()
+```
+php artisan make:controller api/UserInfoController --api
+```
+
+> 接下來打開 api.php 設定路由。
+```
+Route::apiResource('animal', 'AnimalController');
+
+Route::apiResource('animal', 'AnimalController')->only([
+    'index', 'show'
+]);
+
+Route::apiResource('animal', 'AnimalController')->except([
+    'create', 'store', 'update', 'destroy'
+]);
+```
+> 查詢目前的路由
+```
+php artisan route:list
+```
+
+> ENV若有修改時，使用 (要先中斷php artisan serve)
+```
+php artisan config:clear
+```
+
