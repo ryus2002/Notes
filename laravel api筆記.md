@@ -197,3 +197,8 @@ php artisan route:list
 php artisan config:clear
 ```
 
+可以使用這方法開443port，使用API，不和docker衝突
+```
+php artisan serve --port=443
+http://127.0.0.1:443/api/double/get_data
+```
