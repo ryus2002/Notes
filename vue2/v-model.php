@@ -1,3 +1,6 @@
+<html>
+<head>
+<body>
 <div class="wrapper" id="app">
 <form @submit.prevent="checkForm">
   <p>
@@ -9,6 +12,7 @@
 </form>
 </div>
 
+	
 <script>
 Vue.component('auto-textarea', {
 	props:['txt'],
@@ -53,3 +57,5 @@ const app = new Vue({
   }
 })
 </script>
+</body>
+<
