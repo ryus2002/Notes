@@ -7,9 +7,9 @@
     <auto-textarea v-model="info.activity_name"></auto-textarea>
   </p>
   <p>
-    <input type="submit" value="Submit">  
+    <input type="submit" value="Submit">
   </p>
-</form>
+<
 </div>
 
 	
