@@ -15,8 +15,8 @@
 	
 <script>
 Vue.component('auto-textarea', {
-	props:['txt'],
-	data: function () {
+    props:['txt'],
+        data: function () {
 		return {
       			info: {
         			activity_name:"test",
