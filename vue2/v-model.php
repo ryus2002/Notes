@@ -18,10 +18,9 @@ Vue.component('auto-textarea', {
 	props:['txt'],
 	data: function () {
 		return {
-      info: {
-        activity_name:"test",
-      },
-      //txt:"test_txt",
+      			info: {
+        			activity_name:"test",
+      			},
 		}
 	},
 	template: `
