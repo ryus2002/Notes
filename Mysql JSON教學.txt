@@ -12,3 +12,6 @@ SELECT id,json_keys(info) FROM t_json;
 
 如何幫JSON建立索引
 http://mysql.taobao.org/monthly/2017/12/09/
+
+範例文章
+https://kejyuntw.gitbooks.io/mysql-learning-notes/content/query/query-json-contains.html
