@@ -1,0 +1,145 @@
+```
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+/**
+ *  函數名稱
+ *		函數描述(有些會含HTML代碼)
+ *
+ *	@access 		變數可存取的權限 (Example: Public or Private)
+ *	@api 			爲第三方來源的變數
+ *	@author 		函數建立者名稱 (Example: @author Barry <riceooks[at]gmail.com>)
+ *	@category		函數的分類別名，可能某些工具會利用這個來分類你的方法，使好幾個方法歸為某一類，方便做辨識使用
+ *	@copyright		函數的版權宣告 (Example: @copyright 隨手寫有限公司 www.barryblogs.com)
+ *	@deprecated 	代表不建議使用的函數，未來可能會移除這個方法使用到的某個變數，或整個方法都被刪除
+ *	@example 		代表這個函數使用方式可以參考某個資料，可以使用檔案位置或網址 (Example: @example https://www.barryblogs.com/)
+ *	@filesource 	這個函數所需的來源
+ *	@global			函數內有使用的全域變數註解 (Example: @global Number $user_id)
+ *	@ignore 		代表這個函數或區域可以被忽略，通常會加上說明
+ *	@internal 		代表這個函數或區域可能只給予內部使用
+ *	@license 		此函數可能是含有某個版權或許可 (Example: @license http://opensource.org/licenses/gpl-license.php GNU Public License)
+ *	@link 			可能與某個網站有關係 (Example: @link https://www.barryblogs.com/)
+ *	@method 		函數有使用的方法 (Example: @method Array @this->getCategories() or @method String getUserName())
+ *	@package 		利用這個註解來達到細部分層結構 (Example: @package PSRDocumentationAPI or @package PSRDocumentationDoc)
+ *	@param 			函數要帶入的參數 (Example: @param String|Number $username)
+ *	@property 		如果這是一個類別的函數，在類別建構時通常會指定初始化參數，而這個函數可能會使用到某些初始化後的參數，稱之為屬性 (Example: @property Resource|Boolean $mysql_connect)
+ *	@return 		函數最後的回傳值或形態 (Example: @return Array|Object|Boolean)
+ *	@see 			函數參照或關聯的方法 (Example: @see Class User or @see <a href="https://www.barryblogs.com/">BarryBlogs</a>)
+ *	@since 			函數內某個使用的變數由哪個版本變動 (Example: @since v1.3376a $user_nickname )
+ *	@source 		這個比較特別，在函數中可以標示從 m 至 n 行 是做什麼事情 (Example: @source 14 21 Get user data)
+ *	@static 		靜態變數的註解 (Example: @static String $lang = 'zh_TW')
+ *	@subpackage 	利用這個註解來達到細部分層子結構，通常會同時使用 @package，可以參考上面的@package (Example: @package PSR
+ *																									   @subpackage DocumentationAPI)
+ *	@throws 		例外處理的註解，有多種例外處理的方式，每種方式都不同 (Example: @throws InvalidArgumentException if the provided argument is not of type 'array'
+ *																		    @throws Exception other...)
+ *	@todo 			計劃要進行的項目描述，一般應該會使用文字描述
+ *	@uses 			代表某個元素可能與其它結構有利用關係 (Example: @uses MyClass::$items to retrieve the count from)
+ *	@var 			變數(物件成員變數)的形態或描述 (Example: @var Boolean)
+ *	@version 		函數的版本 (Example: v1.3258c)
+ */
+```
+
+
+使用範例
+
+```
+/**
+ * 使用者類別
+ *		使用者相關的方法
+ */
+class User{
+	/**
+	 * 使用者編號
+	 *
+	 * @access public
+	 * @var Number
+	 *
+	 * @version 1.0
+	 * @author Barry
+	 */
+	var $user_id;
+ 
+	/**
+	 * 建構子
+	 *
+	 * @param Number $user_id 使用者編號
+	 * @property Number $user_id 使用者編號
+	 *
+	 * @version 1.0
+	 * @author Barry
+	 */
+	function __construct($user_id){
+		$this->user_id = intval($user_id);
+	}
+ 
+	/**
+	 * 取得使用者編號
+	 *
+	 * @return Number|Boolean
+	 * 
+	 * @version 1.0
+	 * @author Barry
+	 */
+	function getUserID(){
+		if( !empty($this->user_id) ){
+			return $this->user_id;
+		}
+		return false;
+	}
+ 
+	/**
+	 * 取得分類資料
+	 *
+	 * @ignore Number $parent_id 上層分類編號
+	 * @global Class $model 模型變數
+	 * @see Class Model getCategories() 取得分類資料模型
+	 * @return Array|Boolean
+	 *
+	 * @version 1.0
+	 * @author Barry
+	 */
+	function getCategories($parent_id=0){
+		global $model;
+ 
+		$rows = $model->getCategories($parent_id);
+		if( !empty($rows) ){
+			return $rows;
+		}
+ 
+		return false;
+	}
+}
+```
