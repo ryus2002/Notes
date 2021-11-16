@@ -1,2 +1,6 @@
 https://blog.csdn.net/IT__LiangChen/article/details/54891976
 解决ThinkPHP错误Undefined class constant 'MYSQL_ATTR_INIT_COMMAND'
+
+
+要讓$.when裡面的函數生效的話，需把function寫成Deferred / Promise，後面的done才會等待執行
+https://www.fooish.com/jquery/deferred.html
