@@ -1,0 +1,74 @@
+命名及編寫原則
+Model
+PascalCase
+單數命名
+關聯使用Trait實作
+共用方法使用Trait實作
+只處理個別屬性
+View
+只做Output
+model名稱目錄複數命名
+Controller
+子目錄必須為單數
+API相關放在Api底下
+只能透過Contracts實作Service(禁止直接呼叫Model, Repository…)
+一率使用CustomRequest做Validation
+Repository
+單數命名
+只能呼叫Model
+盡量只呼叫EloquentORM
+Service
+單數命名
+只能呼叫Repository
+盡量只處理商業邏輯
+Constants
+TITLE_CASE
+單數命名
+因專案中有大量status及type, 這部分會希望抽離出來做成常數類別增加可讀性，例：
+STATUS_PASS = 1
+STATUS_PENDING = 0
+直接於專案中呼叫
+
+if ($model->status === ModelConstant::STATUS_PASS) ...
+Routes
+lower-kebab-case
+每一個Route必須有name
+API寫在api.php，其餘在auth.php
+通用可以寫在web.php
+Traits
+會重複使用的東西寫成trait, 例:
+
+Loggable（記錄操作）
+RecordCharacter (寫入角色id：經銷商、代理商…)
+RecordSignature (自動更新模型的操作者create_by, update_by)
+Searchable (針對id與name的搜尋功能)
+Eloquent
+如果可以避免直接使用get()查詢所有欄位，只查詢需要用到的欄位，例
+EloquentModel::get(['id', 'name'])
+EloquentModel::select('id', 'name')
+Functions/Methods, Class Properties, Variables
+camelCase
+Array Indices/Database Field Names/Model Fillables/Model Relations/Request
+lower_snake_case
+Test
+Encrypt/Decrypt
+加解密盡量使用encrypt(), decrypt()
+字串加密可使用encryptString(), decryptString
+不可逆加密使用bcrypt()
+API格式
+response([
+    'success' => boolean,
+    'message' => 'put success message here.',
+    'data'    => [...],
+    'errorCode' => '100001',
+    'statusCode' => 200,
+], 200);
+Other
+cURL一率使用Http Facade
+使用http facade時要繞過local ssl檢查可加上
+withOptions(['verify' => config('http.verify')])
+使用http facade時需要bearer token驗證可加上
+withToken($bearerToken)
+遠端屬性賦值一率使用$appends+getAttribute()
+關聯模型的crud務必使用DB:transaction, commit, rollback
+多筆(不確定筆數)資料時使用陣列方式送進後端
