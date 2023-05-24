@@ -1,5 +1,5 @@
 {
     "require": {
-        "clickforce/commons": "dev-main" 
+        "clickforce/commons": "dev-master" 
     }
 }
