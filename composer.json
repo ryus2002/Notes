@@ -1,5 +1,5 @@
 {
     "require": {
-        "clickforce/commons": "dev-develop" 
+        "clickforce/commons": "dev-develop"
     }
 }
