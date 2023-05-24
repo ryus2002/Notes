@@ -1,5 +1,6 @@
 {
     "require": {
-        "clickforce/commons": "dev-feature" 
+        "clickforce/commons": "dev-master",
+        "version": "3"
     }
 }
