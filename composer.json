@@ -1,6 +1,0 @@
-{
-    "require": {
-        "clickforce/commons": "dev-feature",
-        "version": "1"
-    }
-}
