@@ -1,6 +1,6 @@
 {
     "require": {
         "clickforce/commons": "dev-develop",
-        "version": "2"
+        "version": "21"
     }
 }
