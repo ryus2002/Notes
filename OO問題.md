@@ -24,6 +24,41 @@ print payment.pay(t,100)
 ```
 參考答案︰
 ```
+// Factory class for creating payment services
+class PaymentServiceFactory {
+    public function createPaymentService(string $company): PaymentService {
+        switch ($company) {
+            case "CompanyA":
+                return new PaymentCompanyA();
+            case "CompanyB":
+                return new PaymentCompanyB();
+            default:
+                throw new InvalidArgumentException("Unknown payment company: " . $company);
+        }
+    }
+}
+
+// Usage example
+class PaymentProcessor {
+    private PaymentService $paymentService;
+
+    public function __construct(PaymentService $paymentService) {
+        $this->paymentService = $paymentService;
+    }
+
+    public function processPayment(string $to, int $amount): string {
+        return $this->paymentService->pay($to, $amount);
+    }
+}
+
+// Client code
+$factory = new PaymentServiceFactory();
+$paymentService = $factory->createPaymentService($_REQUEST['COMPANY']);
+$processor = new PaymentProcessor($paymentService);
+echo $processor->processPayment("Ant", 100);
+```
+其他答案（延伸出工廠方法）︰
+```
 // 定義支付方式的介面
 interface IPaymentFormatter {
     public function formatPayment(string $to, int $amount): string;
@@ -63,50 +98,10 @@ class PaymentFormatterFactory {
 }
 
 // 使用範例
-$REQUEST['COMPANY'] = "Ant"
 $formatterFactory = new PaymentFormatterFactory();
 $formatter = $formatterFactory->createFormatter($REQUEST['COMPANY']);
 $payment = new PaymentProcessor($formatter);
 print $payment->pay("Ant", 100);
-```
-其他答案（延伸出工廠方法）︰
-```
-interface tool_action
-{
-    public function pay(string CompanyName,string t, int a);
-}
-
-class PaymentCompany implements tool_action
-{
-  public function pay(string CompanyName,string t, int a);
-  {
-    return CompanyName + ":$" + a + "to" + t
-  }
-}
-
-class PaymentCompanyA {
-  public function pay(string CompanyName,string t, int a) {
-    PaymentCompany = new PaymentCompany()
-    return PaymentCompany.pay(CompanyName,t,a)
-  }
-}
-
-class PaymentCompanyB {
-  public function pay(string CompanyName,string t, int a) {
-    PaymentCompany = new PaymentCompany()
-    return PaymentCompany.pay(CompanyName,t,a)
-  }
-}
-
-String t = "Ant"
-if Request COMPANY is "CompanyA" then {
-  payment = new PaymentCompanyA() 
-}
-else {
-  payment = new PaymentCompanyB()
-}
-
-print payment.pay(COMPANY,t,100)
 ```
 
 範例程式為虛擬碼，請試著重構以下程式, 提示:SOLID
