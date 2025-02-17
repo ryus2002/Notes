@@ -24,23 +24,50 @@ print payment.pay(t,100)
 ```
 參考答案︰
 ```
-class PaymentCompany {
-
-  private string _COMPANY
-  
-  PaymentCompany(string COMPANY) {  //這行是建構子, 類似__construct
-    _COMPANY = COMPANY
-  }
-  
-  public function pay(string t, int a) {
-    return _COMPANY + ":$" + a + "to" + t
-  }
+// 定義支付方式的介面
+interface IPaymentFormatter {
+    public function formatPayment(string $to, int $amount): string;
 }
 
-String t = "Ant"
+// 基本的支付格式實作
+class StandardPaymentFormatter implements IPaymentFormatter {
+    private string $company;
 
-payment = new PaymentCompany(Request COMPANY) 
-print payment.pay(t,100)
+    public function __construct(string $company) {
+        $this->company = $company;
+    }
+
+    public function formatPayment(string $to, int $amount): string {
+        return $this->company . ":$" . $amount . "to" . $to;
+    }
+}
+
+// 支付處理類別
+class PaymentProcessor {
+    private IPaymentFormatter $formatter;
+
+    public function __construct(IPaymentFormatter $formatter) {
+        $this->formatter = $formatter;
+    }
+
+    public function pay(string $to, int $amount): string {
+        return $this->formatter->formatPayment($to, $amount);
+    }
+}
+
+// 工廠類別負責創建合適的支付格式器
+class PaymentFormatterFactory {
+    public function createFormatter(string $company): IPaymentFormatter {
+        return new StandardPaymentFormatter($company);
+    }
+}
+
+// 使用範例
+$REQUEST['COMPANY'] = "Ant"
+$formatterFactory = new PaymentFormatterFactory();
+$formatter = $formatterFactory->createFormatter($REQUEST['COMPANY']);
+$payment = new PaymentProcessor($formatter);
+print $payment->pay("Ant", 100);
 ```
 其他答案（延伸出工廠方法）︰
 ```
