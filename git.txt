@@ -69,6 +69,9 @@ git tag commit_id //給特定的commit_id打標籤
 git tag -a v1.0 -m "tag1" //打帶說明的標籤
 操作標籤
 
+從其他分支撈取某個commit
+git cherry-pick 某個commit id
+
 刪除標籤
 git tag -d v1.0
 推送標籤到遠程分支
