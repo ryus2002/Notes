@@ -24,84 +24,50 @@ print payment.pay(t,100)
 ```
 參考答案︰
 ```
-// Factory class for creating payment services
-class PaymentServiceFactory {
-    public function createPaymentService(string $company): PaymentService {
-        switch ($company) {
-            case "CompanyA":
-                return new PaymentCompanyA();
-            case "CompanyB":
-                return new PaymentCompanyB();
-            default:
-                throw new InvalidArgumentException("Unknown payment company: " . $company);
+// 抽象層 (DIP)
+interface PaymentProvider {
+    String pay(String recipient, int amount);
+}
+
+// 具體實現 (OCP)
+class CompanyA implements PaymentProvider {
+    public String pay(String t, int a) {
+        return "CompanyA:$" + a + "to" + t;
+    }
+}
+
+class CompanyB implements PaymentProvider {
+    public String pay(String t, int a) {
+        return "CompanyB:$" + a + "to" + t;
+    }
+}
+
+// 工廠模式封裝對象創建 (SRP)
+class PaymentFactory {
+    public static PaymentProvider create(String company) {
+        switch(company) {
+            case "CompanyA": return new CompanyA();
+            case "CompanyB": return new CompanyB();
+            default: throw new IllegalArgumentException();
         }
     }
 }
 
-// Usage example
-class PaymentProcessor {
-    private PaymentService $paymentService;
+// 客戶端使用 (LSP/ISP)
+String recipient = "Ant";
+PaymentProvider payment = PaymentFactory.create(Request.COMPANY);
+System.out.println(payment.pay(recipient, 100));
 
-    public function __construct(PaymentService $paymentService) {
-        $this->paymentService = $paymentService;
-    }
-
-    public function processPayment(string $to, int $amount): string {
-        return $this->paymentService->pay($to, $amount);
-    }
-}
-
-// Client code
-$factory = new PaymentServiceFactory();
-$paymentService = $factory->createPaymentService($_REQUEST['COMPANY']);
-$processor = new PaymentProcessor($paymentService);
-echo $processor->processPayment("Ant", 100);
-```
-其他答案（延伸出工廠方法）︰
-```
-// 定義支付方式的介面
-interface IPaymentFormatter {
-    public function formatPayment(string $to, int $amount): string;
-}
-
-// 基本的支付格式實作
-class StandardPaymentFormatter implements IPaymentFormatter {
-    private string $company;
-
-    public function __construct(string $company) {
-        $this->company = $company;
-    }
-
-    public function formatPayment(string $to, int $amount): string {
-        return $this->company . ":$" . $amount . "to" . $to;
-    }
-}
-
-// 支付處理類別
-class PaymentProcessor {
-    private IPaymentFormatter $formatter;
-
-    public function __construct(IPaymentFormatter $formatter) {
-        $this->formatter = $formatter;
-    }
-
-    public function pay(string $to, int $amount): string {
-        return $this->formatter->formatPayment($to, $amount);
-    }
-}
-
-// 工廠類別負責創建合適的支付格式器
-class PaymentFormatterFactory {
-    public function createFormatter(string $company): IPaymentFormatter {
-        return new StandardPaymentFormatter($company);
-    }
-}
-
-// 使用範例
-$formatterFactory = new PaymentFormatterFactory();
-$formatter = $formatterFactory->createFormatter($REQUEST['COMPANY']);
-$payment = new PaymentProcessor($formatter);
-print $payment->pay("Ant", 100);
+主要改進點：
+依賴反轉原則 (DIP)：透過介面抽象支付行為
+開放封閉原則 (OCP)：新增支付公司只需擴展新類別
+單一職責原則 (SRP)：工廠類專注對象創建，支付類專注支付邏輯
+里氏替換原則 (LSP)：所有實現類可無縫替換介面
+介面隔離原則 (ISP)：保持介面最小化且聚焦單一功能
+當需要新增支付公司時，只需：
+新增實作 PaymentProvider 的 CompanyC 類
+在工廠新增對應 case
+無需修改任何既有客戶端程式碼
 ```
 
 範例程式為虛擬碼，請試著重構以下程式, 提示:SOLID
