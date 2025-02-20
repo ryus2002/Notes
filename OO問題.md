@@ -96,24 +96,75 @@ class User {
 ```
 參考答案︰
 ```
+// ==============================
+// 核心改進點：拆分職責 + 強化封裝
+// ==============================
+
+// 職責 1：數據封裝 (SRP)
 class User {
-  private string _firstName
-  private string _lastName
-  private int _age
+    private final String firstName;  // 改為 final 強化不可變性
+    private final String lastName;
+    private final Age age;          // 用值對象取代基本類型 (Primitive Obsession 反模式修正)
 
-  User(string firstName,string lastName, int age) { //這行應該是建構子, 類似__construct
-    setUser(firstName, lastName, age)
-  }
+    public User(String firstName, String lastName, Age age) {
+        this.firstName = validateName(firstName);
+        this.lastName = validateName(lastName);
+        this.age = age;
+    }
 
-  public getUser() {
-    return array(_firstName, _lastName, _age)
-  }
+    // 獨立驗證邏輯 (SRP)
+    private String validateName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Invalid name");
+        }
+        return name;
+    }
 
-  public setUser(string firstName, string lastName, int age) {
-    _firstName = firstName
-    _lastName = lastName
-    _age = age
-  }
+    // 明確的 getter 而非返回陣列 (ISP)
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
+    public Age getAge() { return age; }
+}
+
+// 職責 2：年齡專用值對象 (SRP + OCP)
+class Age {
+    private final int value;
+
+    public Age(int value) {
+        if (value < 0) throw new IllegalArgumentException("Age cannot be negative");
+        this.value = value;
+    }
+
+    public int getValue() { return value; }
+
+    // 未來可擴展年齡相關行為 (OCP)
+    public boolean isAdult() { return value >= 18; }
+}
+
+// 職責 3：User 構建器 (用於處理可變需求)
+class UserBuilder {
+    private String firstName;
+    private String lastName;
+    private Age age;
+
+    public UserBuilder setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public UserBuilder setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public UserBuilder setAge(Age age) {
+        this.age = age;
+        return this;
+    }
+
+    public User build() {
+        return new User(firstName, lastName, age);
+    }
 }
 ```
 
