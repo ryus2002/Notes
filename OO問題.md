@@ -93,6 +93,38 @@ class User {
     _age = age
   }
 }
+
+// 構建對象
+User user = new UserBuilder()
+    .setFirstName("Tony")
+    .setLastName("Stark")
+    .setAge(new Age(53))
+    .build();
+
+// 存取數據
+System.out.println(user.getAge().isAdult()); // 輸出 true
+
+重構重點解析
+單一職責原則 (SRP)
+User 類只負責數據封裝與基礎驗證
+Age 類專門處理年齡相關邏輯
+UserBuilder 負責處理對象構建過程
+
+開放封閉原則 (OCP)
+新增年齡行為時（如 isSenior()），只需修改 Age 類，無需動 User
+未來若需支持不同名稱格式，可透過繼承 User 實現，而非修改原始類
+
+里氏替換原則 (LSP)
+所有子類（如 InternationalUser）可無縫替換 User 父類
+值對象 Age 保證行為一致性
+
+介面隔離原則 (ISP)
+客戶端僅需存取明確的 getter（如 getAge()），而非整個陣列
+Builder 提供彈性設置方法，避免強制性多參數設置
+
+依賴反轉原則 (DIP)
+高層模組（如業務邏輯）依賴抽象的 User，而非具體實現
+值對象 Age 封裝底層細節
 ```
 參考答案︰
 ```
