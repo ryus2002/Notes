@@ -42,68 +42,163 @@
 ```
 /**
  * 使用者類別
- *		使用者相關的方法
+ *		使用者相關的方法，包括使用者編號管理、分類資料取得等功能。
+ *
+ * @package UserManagement
+ * @subpackage Core
+ * @author Barry <riceooks[at]gmail.com>
+ * @copyright 隨手寫有限公司 www.barryblogs.com
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version 1.0
  */
-class User{
-	/**
-	 * 使用者編號
-	 *
-	 * @access public
-	 * @var Number
-	 *
-	 * @version 1.0
-	 * @author Barry
-	 */
-	var $user_id;
- 
-	/**
-	 * 建構子
-	 *
-	 * @param Number $user_id 使用者編號
-	 * @property Number $user_id 使用者編號
-	 *
-	 * @version 1.0
-	 * @author Barry
-	 */
-	function __construct($user_id){
-		$this->user_id = intval($user_id);
-	}
- 
-	/**
-	 * 取得使用者編號
-	 *
-	 * @return Number|Boolean
-	 * 
-	 * @version 1.0
-	 * @author Barry
-	 */
-	function getUserID(){
-		if( !empty($this->user_id) ){
-			return $this->user_id;
-		}
-		return false;
-	}
- 
-	/**
-	 * 取得分類資料
-	 *
-	 * @ignore Number $parent_id 上層分類編號
-	 * @global Class $model 模型變數
-	 * @see Class Model getCategories() 取得分類資料模型
-	 * @return Array|Boolean
-	 *
-	 * @version 1.0
-	 * @author Barry
-	 */
-	function getCategories($parent_id=0){
-		global $model;
- 
-		$rows = $model->getCategories($parent_id);
-		if( !empty($rows) ){
-			return $rows;
-		}
- 
-		return false;
-	}
+class User {
+    /**
+     * 使用者編號
+     *
+     * @access public
+     * @var Number
+     *
+     * @version 1.0
+     * @author Barry
+     */
+    public $user_id;
+
+    /**
+     * 使用者名稱
+     *
+     * @access private
+     * @var String
+     *
+     * @version 1.0
+     * @author Barry
+     */
+    private $username;
+
+    /**
+     * 建構子
+     *
+     * @param Number $user_id 使用者編號
+     * @param String $username 使用者名稱 (可選)
+     *
+     * @property Number $user_id 使用者編號
+     * @property String $username 使用者名稱
+     *
+     * @version 1.0
+     * @author Barry
+     */
+    function __construct($user_id, $username = '') {
+        $this->user_id = intval($user_id);
+        $this->username = $username;
+    }
+
+    /**
+     * 取得使用者編號
+     *
+     * @return Number|Boolean 回傳使用者編號，若未設定則回傳 false
+     *
+     * @version 1.0
+     * @author Barry
+     */
+    function getUserID() {
+        if (!empty($this->user_id)) {
+            return $this->user_id;
+        }
+        return false;
+    }
+
+    /**
+     * 設定使用者名稱
+     *
+     * @param String $username 使用者名稱
+     * @return void
+     *
+     * @version 1.0
+     * @author Barry
+     */
+    function setUsername($username) {
+        $this->username = $username;
+    }
+
+    /**
+     * 取得使用者名稱
+     *
+     * @return String|Boolean 回傳使用者名稱，若未設定則回傳 false
+     *
+     * @version 1.0
+     * @author Barry
+     */
+    function getUsername() {
+        if (!empty($this->username)) {
+            return $this->username;
+        }
+        return false;
+    }
+
+    /**
+     * 取得分類資料
+     *
+     * @param Number $parent_id 上層分類編號 (預設為 0)
+     * @global Class $model 模型變數
+     * @see Class Model getCategories() 取得分類資料模型
+     * @return Array|Boolean 回傳分類資料，若無資料則回傳 false
+     *
+     * @throws InvalidArgumentException 如果 $parent_id 不是數字
+     * @throws Exception 如果模型無法取得資料
+     *
+     * @version 1.0
+     * @author Barry
+     */
+    function getCategories($parent_id = 0) {
+        global $model;
+
+        if (!is_numeric($parent_id)) {
+            throw new InvalidArgumentException("Parent ID must be a number.");
+        }
+
+        try {
+            $rows = $model->getCategories($parent_id);
+            if (!empty($rows)) {
+                return $rows;
+            }
+            return false;
+        } catch (Exception $e) {
+            throw new Exception("Failed to retrieve categories: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * 檢查使用者是否為管理員
+     *
+     * @return Boolean 回傳是否為管理員
+     *
+     * @todo 實作管理員檢查邏輯
+     *
+     * @version 1.0
+     * @author Barry
+     */
+    function isAdmin() {
+        // TODO: 實作管理員檢查邏輯
+        return false;
+    }
+}
+
+// 建立使用者物件
+$user = new User(123, "Barry");
+
+// 取得使用者編號
+echo $user->getUserID(); // 輸出: 123
+
+// 設定使用者名稱
+$user->setUsername("BarryBlogs");
+
+// 取得使用者名稱
+echo $user->getUsername(); // 輸出: BarryBlogs
+
+// 取得分類資料
+try {
+    $categories = $user->getCategories(0);
+    print_r($categories);
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
 }
 ```
