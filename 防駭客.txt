@@ -1,54 +1,185 @@
-1.限定機器範圍
-限定PC or Mobile
-http的user agent可判斷用甚麼瀏覽器 ex: Line、Chrome
+以下是根據您的需求整理的 Markdown 版本內容，涵蓋了所有提到的安全機制和實作建議：
 
-2.google recaptcha 機器人
-註冊/登入時可使用，而情境為其他狀況，導致一分鐘內頻繁使用(觸發三次上下)的話將自動判定成機器人
+---
 
-3.使用JWT
-LINE JWT -> liff.getIDToken
+# 系統安全設計與風控機制
 
-4.使用session
+## 1. 限定機器範圍 (PC or Mobile)
+- **目標**：限制系統只能在特定設備（PC 或 Mobile）上運行。
+- **實作方式**：
+  - 使用 HTTP 請求中的 `User-Agent` 來判斷設備類型。
+  - 常見的 `User-Agent` 關鍵字：
+    - Mobile: `Mobile`, `Android`, `iPhone`
+    - PC: `Windows`, `Macintosh`, `Linux`
+- **程式碼範例**：
+  ```javascript
+  function isMobile(userAgent) {
+      return /Mobile|Android|iPhone/i.test(userAgent);
+  }
 
-5.黑名單
--標準
-1. 檔國外的IP
-2. IP突然切換
-3. rate limit->N分鐘內只能被call幾次
-4. 嘗試次數
-5. 打api跳出throw錯誤次數
+  const userAgent = req.headers['user-agent'];
+  if (isMobile(userAgent)) {
+      console.log("This is a mobile device.");
+  } else {
+      console.log("This is a PC.");
+  }
+  ```
 
-6.白名單 
-- 特例 ex:自己的IP
+---
 
+## 2. Google reCAPTCHA 機器人防護
+- **目標**：防止機器人濫用註冊/登入功能。
+- **實作方式**：
+  - 在註冊/登入頁面嵌入 Google reCAPTCHA。
+  - 若一分鐘內觸發超過三次，自動判定為機器人並鎖定。
+- **程式碼範例**：
+  ```javascript
+  const recaptcha = require('google-recaptcha');
+  const recaptchaClient = new recaptcha({ secret: 'YOUR_SECRET_KEY' });
 
+  function verifyCaptcha(response) {
+      return new Promise((resolve, reject) => {
+          recaptchaClient.verify({ response }, (err, data) => {
+              if (err) reject(err);
+              else resolve(data);
+          });
+      });
+  }
 
+  // 在註冊/登入邏輯中調用
+  const captchaResponse = req.body['g-recaptcha-response'];
+  const result = await verifyCaptcha(captchaResponse);
+  if (!result.success) {
+      throw new Error("reCAPTCHA verification failed.");
+  }
+  ```
 
+---
 
+## 3. 使用 JWT (JSON Web Token)
+- **目標**：實現安全的身份驗證機制。
+- **實作方式**：
+  - 使用 LINE 的 `liff.getIDToken` 取得 JWT。
+  - 驗證 JWT 的有效性並解析用戶資訊。
+- **程式碼範例**：
+  ```javascript
+  const jwt = require('jsonwebtoken');
 
+  function verifyJWT(token, secret) {
+      try {
+          const decoded = jwt.verify(token, secret);
+          return decoded;
+      } catch (err) {
+          throw new Error("Invalid JWT.");
+      }
+  }
 
+  const idToken = liff.getIDToken();
+  const userInfo = verifyJWT(idToken, 'YOUR_SECRET_KEY');
+  ```
 
-1. IP 驗證與嘗試次數
-黑客用的多半是跳板 IP。所以 IP 要不是從奇怪的小國過來，就是會與用戶平常慣用的 IP 非常不同。
-作為系統防御者，你可以設置不同 IP 嘗試錯誤次數超過3-5次，就自動發短信警告用戶。黑客就算嘗試登入成功，因為來源 IP 網段不同，還是要通知用戶有不同 IP 燈入。
-再來，你還可以加入一道降速手段。密碼正確之後，還要加入一道圖形驗證碼，防止用戶被程序自動攻破。
-而如果用戶真的被成功登入，進行關鍵敏感操作（如提現或提幣），必須在系統設計上間隔 2-5 分鐘以上才能操作。
-並且提幣這個動作要有第三道確認（如郵件確認）。
-這是為了爭取讓有些用戶，有時間差可以反應阻擋攻擊。
+---
 
+## 4. 使用 Session
+- **目標**：管理用戶會話狀態。
+- **實作方式**：
+  - 使用 Session 存儲用戶登入狀態。
+  - 設置 Session 過期時間。
+- **程式碼範例**：
+  ```javascript
+  const session = require('express-session');
 
-3. IP 切換，cookie 立即作廢，自動強制登出使用者
-除了盜取用戶的密碼外，有的服務，是用來釣魚使用者的 cookie 的。
-這有一些手段你可以主動用來防禦：
-一個帳號只能同時有一個 IP 登入
-當 IP 切換立刻會被強制登出
-cookie 在登入後幾小時候，沒有動作，也會自動被登出
-確保這些 cookie 即使被偷了，也不一定有用。
+  app.use(session({
+      secret: 'YOUR_SESSION_SECRET',
+      resave: false,
+      saveUninitialized: true,
+      cookie: { maxAge: 3600000 } // 1小時過期
+  }));
 
+  // 存儲用戶資訊
+  req.session.user = { id: 123, username: 'barry' };
+  ```
 
-API 風控
-API 端點也是容易被 DDoS 與身份盜竊的重災區。
-所以 API 在設計上應該要設計 rate limit，與請用戶設計 IP 白名單。而不是任意的 IP 就能存取。這樣才能保證是用戶授權的客戶端操作。
+---
 
+## 5. 黑名單機制
+### 標準：
+1. **擋國外的 IP**：
+   - 使用 IP 地理位置庫（如 `geoip-lite`）過濾非本國 IP。
+2. **IP 突然切換**：
+   - 記錄用戶常用 IP，若檢測到異常切換，則觸發安全機制。
+3. **Rate Limit**：
+   - 限制每分鐘 API 呼叫次數（如每分鐘最多 10 次）。
+4. **嘗試次數**：
+   - 登入失敗超過 3 次，鎖定帳號 5 分鐘。
+5. **API 錯誤次數**：
+   - 記錄 API 錯誤次數，超過閾值則加入黑名單。
 
+### 程式碼範例：
+```javascript
+const rateLimit = require('express-rate-limit');
 
+// Rate Limit 設定
+const limiter = rateLimit({
+    windowMs: 60 * 1000, // 1分鐘
+    max: 10, // 每分鐘最多 10 次
+    message: "Too many requests, please try again later."
+});
+
+app.use(limiter);
+```
+
+---
+
+## 6. 白名單機制
+- **目標**：允許特定 IP 或用戶無限制訪問。
+- **實作方式**：
+  - 維護一個白名單列表，檢查請求 IP 是否在白名單內。
+- **程式碼範例**：
+  ```javascript
+  const whitelist = ['192.168.1.1', '127.0.0.1'];
+
+  function isWhitelisted(ip) {
+      return whitelist.includes(ip);
+  }
+
+  const clientIP = req.ip;
+  if (!isWhitelisted(clientIP)) {
+      throw new Error("Access denied.");
+  }
+  ```
+
+---
+
+## 7. IP 驗證與嘗試次數
+- **目標**：防止黑客使用跳板 IP 進行攻擊。
+- **實作方式**：
+  - 記錄用戶常用 IP，若檢測到異常 IP，發送警告短信。
+  - 登入成功後，加入圖形驗證碼作為第二道防護。
+  - 敏感操作（如提現）需間隔 2-5 分鐘，並通過郵件確認。
+
+---
+
+## 8. IP 切換與 Cookie 作廢
+- **目標**：防止 Cookie 被盜用。
+- **實作方式**：
+  - 一個帳號只能同時有一個 IP 登入。
+  - 若檢測到 IP 切換，立即作廢 Cookie 並強制登出。
+  - 設置 Session 過期時間（如 2 小時無動作自動登出）。
+
+---
+
+## 9. API 風控
+- **目標**：防止 API 被濫用或 DDoS 攻擊。
+- **實作方式**：
+  - 設計 Rate Limit，限制每分鐘 API 呼叫次數。
+  - 要求用戶設置 IP 白名單，僅允許授權的客戶端訪問。
+
+---
+
+## 總結
+透過以上機制，可以有效提升系統安全性，防止機器人攻擊、IP 濫用、Cookie 盜用等問題。建議結合日誌記錄與監控系統，即時發現並處理異常行為。
+
+--- 
+
+希望這份 Markdown 內容能滿足您的需求！如果需要進一步調整或補充，請隨時告知。
