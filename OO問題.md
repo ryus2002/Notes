@@ -216,6 +216,25 @@ try {
 } catch (IllegalArgumentException e) {
     System.out.println(e.getMessage());
 }
+
+架構優勢
+線程安全性
+不可變對象設計天然線程安全
+
+防禦式編程
+在構造階段完成所有有效性檢查
+
+領域驅動設計
+通過值對象強化業務語意
+
+可測試性
+每個組件可獨立測試
+
+當需要新增「電子郵件」屬性時：
+在 User 類添加 private final Email email
+新增 Email 值對象封裝驗證邏輯
+擴展建造者模式
+無需修改任何現有客戶端程式碼
 ```
 
 
