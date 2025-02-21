@@ -235,6 +235,22 @@ try {
 新增 Email 值對象封裝驗證邏輯
 擴展建造者模式
 無需修改任何現有客戶端程式碼
+
+// 擴展示範
+final class Email {
+    private final String value;
+
+    public Email(String value) {
+        if (!value.contains("@")) throw new IllegalArgumentException("Invalid email");
+        this.value = value;
+    }
+}
+
+// 在 User.Builder 新增
+public Builder email(Email email) {
+    this.email = email;
+    return this;
+}
 ```
 
 
